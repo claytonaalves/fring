@@ -1,6 +1,7 @@
 import requests
+import settings
 
-FIREBASE_API_KEY = "fake-firebase-key"
+FIREBASE_API_KEY = settings.settings["firebase_api_key"]
 
 def puclica_anuncio_test(anuncio):
     print(anuncio)
