@@ -1,7 +1,7 @@
 #coding: utf8
 import database
 
-from flask import Flask, send_from_directory, g
+from flask import Flask, g
 
 from categoria import categoria
 from anunciante import anunciante
@@ -18,8 +18,4 @@ app.register_blueprint(anunciante, url_prefix="/anuncio")
 @app.route('/')
 def index():
     return 'ok!'
-
-@app.route('/images/<path:path>')
-def img_route(path):
-    return send_from_directory('../images', path)
 
