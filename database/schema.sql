@@ -16,15 +16,18 @@ CREATE TABLE anunciante (
     id_categoria INTEGER, guid TEXT, bairro text, cidade text, uf text,
     FOREIGN KEY (id_categoria) REFERENCES categoria(_id) 
 );
-CREATE TABLE anuncio ( 
-    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
-    titulo TEXT, 
-    descricao TEXT, 
-    valido_ate TEXT, 
-    imagem TEXT, 
-    id_categoria INTEGER, 
-    publicado INTEGER, 
-    id_anunciante integer, 
-    guid_anunciante text, 
-    guid TEXT
+
+CREATE TABLE publicacao ( 
+   guid            TEXT    NOT NULL PRIMARY KEY,
+   guid_anunciante TEXT    NOT NULL,
+   id_categoria    INTEGER NOT NULL,
+   titulo          TEXT    NOT NULL,
+   descricao       TEXT,
+   data_publicacao INTEGER NOT NULL,
+   data_validade   INTEGER NOT NULL,
+   imagem          TEXT,
+   publicado       INTEGER, -- Publicado no Firebase
+   FOREIGN KEY (guid_anunciante) REFERENCES anunciante(guid),
+   FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria)
 );
+
