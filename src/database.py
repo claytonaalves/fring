@@ -1,4 +1,7 @@
+#coding: utf8
 import sqlite3
+
+from datetime import datetime
 
 DATABASE = 'database/database.db'
 
@@ -71,34 +74,56 @@ def anunciante_por_id(idanunciante):
 
 # ====================================================
 # ====================================================
-# Anuncios
+# Publicações
 # ====================================================
 # ====================================================
 
-def salva_anuncio(anuncio):
+QUERY_PUBLICACOES = (
+    "SELECT guid, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade, imagem "
+    "FROM publicacao "
+)
+
+def salva_publicacao(publicacao):
+    db = get_connection()
+    cursor = db.cursor()
+
+    # Convertendo datas para epoch
+    data_publicacao = datetime.strptime(publicacao["data_publicacao"], "%Y-%m-%d %H:%M:%S").strftime("%s")
+    data_validade   = datetime.strptime(publicacao["data_validade"], "%Y-%m-%d %H:%M:%S").strftime("%s")
+
+    cursor.execute(
+        "INSERT INTO publicacao (guid, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?)", 
+        (publicacao["guid"], 
+         publicacao["guid_anunciante"], 
+         publicacao["id_categoria"], 
+         publicacao["titulo"], 
+         publicacao["descricao"], 
+         data_publicacao,
+         data_validade)
+    )
+    db.commit()
+
+def obtem_publicacoes_desde(data_inicio, ids_categorias):
+    params = [data_inicio]
+    params.extend(ids_categorias)
     db = get_connection()
     cursor = db.cursor()
     cursor.execute(
-        "INSERT INTO anuncio (guid, titulo, descricao, valido_ate, id_categoria, guid_anunciante) "
-        "VALUES (?, ?, ?, ?, ?, ?)", 
-        (anuncio["guid"], anuncio["titulo"], anuncio["descricao"], 
-         anuncio["valido_ate"], anuncio["id_categoria"],
-         anuncio["guid_anunciante"]))
-    db.commit()
+        QUERY_PUBLICACOES + 
+        "WHERE data_publicacao>=? "
+        "AND id_categoria IN ({0})".format(','.join('?'*len(ids_categorias))), params)
+    return convert_to_dict_list(cursor)
 
-def anuncios_por_anunciante(guid_anunciante):
+def obtem_publicacoes_por_anunciante(guid_anunciante):
     db = get_connection()
     cur = db.cursor()
-    cur.execute(
-        "SELECT titulo, descricao, valido_ate, id_categoria, imagem "
-        "FROM anuncio "
-        "WHERE guid_anunciante=?", (guid_anunciante,))
+    cur.execute(QUERY_PUBLICACOES + "WHERE guid_anunciante=?", (guid_anunciante,))
     return convert_to_dict_list(cur)
 
-
-def obtem_anuncio(guid_anuncio):
+def obtem_publicacao(guid):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM anuncio WHERE guid=?", (guid_anuncio,))
+    cursor.execute(QUERY_PUBLICACOES + "WHERE guid=?", (guid,))
     return dict(cursor.fetchone())
 
