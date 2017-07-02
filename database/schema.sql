@@ -1,24 +1,34 @@
+CREATE TABLE cidade (
+    id_cidade INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    uf TEXT NOT NULL
+);
+
 CREATE TABLE categoria (
-    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id_categoria INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id_cidade INTEGER,
     descricao TEXT NOT NULL,
-    qtde_anunciantes INTEGER,
     imagem TEXT
 );
+
 CREATE TABLE anunciante (
-    _id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    guid TEXT, 
+    id_categoria INTEGER,
     razao_social TEXT,
     nome_fantasia TEXT,
-    logradouro TEXT,
-    numero TEXT,
     telefone TEXT,
     celular TEXT,
     email TEXT,
-    id_categoria INTEGER, guid TEXT, bairro text, cidade text, uf text,
-    FOREIGN KEY (id_categoria) REFERENCES categoria(_id) 
+    logradouro TEXT,
+    numero TEXT,
+    cidade text, 
+    bairro text, 
+    uf text,
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria) 
 );
 
 CREATE TABLE publicacao ( 
-   guid            TEXT    NOT NULL PRIMARY KEY,
+   guid_publicacao TEXT    NOT NULL PRIMARY KEY,
    guid_anunciante TEXT    NOT NULL,
    id_categoria    INTEGER NOT NULL,
    titulo          TEXT    NOT NULL,

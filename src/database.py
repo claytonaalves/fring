@@ -32,14 +32,31 @@ def convert_to_dict_list(cursor):
 
 # ====================================================
 # ====================================================
+# Cidades
+# ====================================================
+# ====================================================
+
+def todas_cidades():
+    db = get_connection()
+    cur = db.cursor()
+    cur.execute("SELECT nome, uf FROM cidade")
+    return convert_to_dict_list(cur)
+
+# ====================================================
+# ====================================================
 # Categorias
 # ====================================================
 # ====================================================
 
-def todas_categorias():
+def categorias_por_cidade(id_cidade):
     db = get_connection()
     cur = db.cursor()
-    cur.execute("SELECT _id, descricao, imagem, (SELECT COUNT(*) FROM anunciante WHERE id_categoria=a._id) AS qtde_anunciantes FROM categoria a")
+    cur.execute(
+        "SELECT "
+        "   id_categoria, descricao, imagem, "
+        "   (SELECT COUNT(*) FROM anunciante WHERE id_categoria=a.id_categoria) AS qtde_anunciantes "
+        "FROM categoria a "
+        "WHERE id_cidade=?", (id_cidade,))
     return convert_to_dict_list(cur)
 
 # ====================================================
@@ -79,7 +96,7 @@ def anunciante_por_id(idanunciante):
 # ====================================================
 
 QUERY_PUBLICACOES = (
-    "SELECT guid, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade, imagem "
+    "SELECT guid_publicacao, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade, imagem "
     "FROM publicacao "
 )
 
@@ -92,7 +109,7 @@ def salva_publicacao(publicacao):
     data_validade   = datetime.strptime(publicacao["data_validade"], "%Y-%m-%d %H:%M:%S").strftime("%s")
 
     cursor.execute(
-        "INSERT INTO publicacao (guid, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade) "
+        "INSERT INTO publicacao (guid_publicacao, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)", 
         (publicacao["guid"], 
          publicacao["guid_anunciante"], 
@@ -124,6 +141,6 @@ def obtem_publicacoes_por_anunciante(guid_anunciante):
 def obtem_publicacao(guid):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute(QUERY_PUBLICACOES + "WHERE guid=?", (guid,))
+    cursor.execute(QUERY_PUBLICACOES + "WHERE guid_publicacao=?", (guid,))
     return dict(cursor.fetchone())
 

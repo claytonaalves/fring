@@ -2,21 +2,19 @@ import json
 
 import database 
 
-from flask import Blueprint, Response, send_from_directory
+from flask import Blueprint, Response, request, abort, send_from_directory
 
-categoria = Blueprint("categoria", __name__)
+categorias = Blueprint("categorias", __name__)
 
-@categoria.route('/')
-def categoria_index():
-    categorias = database.todas_categorias()
+@categorias.route('/')
+def categorias_index():
+    id_cidade = request.args.get("id_cidade", "")
+    if not id_cidade:
+        abort(412)
+    categorias = database.categorias_por_cidade(id_cidade)
     return Response(json.dumps(categorias), mimetype='application/json')
 
-@categoria.route('/<int:id_categoria>')
-def categoria_por_id(id_categoria):
-    anunciantes = database.anunciantes_por_categoria(id_categoria)
-    return Response(json.dumps(anunciantes), mimetype='application/json')
-
-@categoria.route('/images/<path:path>')
+@categorias.route('/images/<path:path>')
 def img_route(path):
     return send_from_directory('../images/categorias', path)
 
