@@ -39,7 +39,7 @@ def convert_to_dict_list(cursor):
 def todas_cidades():
     db = get_connection()
     cur = db.cursor()
-    cur.execute("SELECT nome, uf FROM cidade")
+    cur.execute("SELECT id_cidade, nome, uf FROM cidade")
     return convert_to_dict_list(cur)
 
 # ====================================================
@@ -69,11 +69,11 @@ def salva_anunciante(anunciante):
     db = get_connection()
     cursor = db.cursor()
     cursor.execute(
-        "INSERT INTO anunciante (nome_fantasia, logradouro, numero, bairro, cidade, uf, telefone, celular, email, id_categoria, guid) "
+        "INSERT INTO anunciante (guid_anunciante, nome_fantasia, logradouro, numero, bairro, cidade, uf, telefone, celular, email, id_categoria) "
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-        (anunciante["nome"], anunciante["endereco"], anunciante["numero"], anunciante["bairro"], 
+        (anunciante["guid_anunciante"], anunciante["nome_fantasia"], anunciante["endereco"], anunciante["numero"], anunciante["bairro"], 
          anunciante["cidade"], anunciante["estado"], anunciante["telefone"], anunciante["celular"], 
-         anunciante["email"], anunciante["id_categoria"], anunciante["guid"]))
+         anunciante["email"], anunciante["id_categoria"]))
     db.commit()
 
 def anunciantes_por_categoria(id_categoria):
@@ -111,7 +111,7 @@ def salva_publicacao(publicacao):
     cursor.execute(
         "INSERT INTO publicacao (guid_publicacao, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)", 
-        (publicacao["guid"], 
+        (publicacao["guid_publicacao"], 
          publicacao["guid_anunciante"], 
          publicacao["id_categoria"], 
          publicacao["titulo"], 
