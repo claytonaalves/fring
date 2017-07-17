@@ -13,6 +13,7 @@ CREATE TABLE categoria (
 
 CREATE TABLE anunciante (
     guid_anunciante TEXT NOT NULL PRIMARY KEY, 
+    id_cidade INTEGER NOT NULL,
     id_categoria INTEGER NOT NULL,
     razao_social TEXT,
     nome_fantasia TEXT,
@@ -21,9 +22,7 @@ CREATE TABLE anunciante (
     email TEXT,
     logradouro TEXT,
     numero TEXT,
-    cidade text, 
     bairro text, 
-    uf text,
     data_cadastro INTEGER NOT NULL DEFAULT (strftime('%s', 'now', 'localtime')),
     FOREIGN KEY (id_categoria) REFERENCES categoria(id_categoria) 
 );

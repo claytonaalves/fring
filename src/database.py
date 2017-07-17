@@ -69,11 +69,11 @@ def salva_anunciante(anunciante):
     db = get_connection()
     cursor = db.cursor()
     cursor.execute(
-        "INSERT INTO anunciante (guid_anunciante, nome_fantasia, logradouro, numero, bairro, cidade, uf, telefone, celular, email, id_categoria) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-        (anunciante["guid_anunciante"], anunciante["nome_fantasia"], anunciante["endereco"], anunciante["numero"], anunciante["bairro"], 
-         anunciante["cidade"], anunciante["estado"], anunciante["telefone"], anunciante["celular"], 
-         anunciante["email"], anunciante["id_categoria"]))
+        "INSERT INTO anunciante (guid_anunciante, nome_fantasia, logradouro, numero, bairro, telefone, celular, email, id_cidade, id_categoria) "
+        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+        (anunciante["guid_anunciante"], anunciante["nome_fantasia"], anunciante["endereco"], 
+         anunciante["numero"], anunciante["bairro"], anunciante["telefone"], anunciante["celular"], 
+         anunciante["email"], anunciante['id_cidade'], anunciante["id_categoria"]))
     db.commit()
 
 def anunciantes_por_categoria(id_categoria):
@@ -104,10 +104,6 @@ def salva_publicacao(publicacao):
     db = get_connection()
     cursor = db.cursor()
 
-    # Convertendo datas para epoch
-    data_publicacao = datetime.strptime(publicacao["data_publicacao"], "%Y-%m-%d %H:%M:%S").strftime("%s")
-    data_validade   = datetime.strptime(publicacao["data_validade"], "%Y-%m-%d %H:%M:%S").strftime("%s")
-
     cursor.execute(
         "INSERT INTO publicacao (guid_publicacao, guid_anunciante, id_categoria, titulo, descricao, data_publicacao, data_validade) "
         "VALUES (?, ?, ?, ?, ?, ?, ?)", 
@@ -116,8 +112,8 @@ def salva_publicacao(publicacao):
          publicacao["id_categoria"], 
          publicacao["titulo"], 
          publicacao["descricao"], 
-         data_publicacao,
-         data_validade)
+         publicacao["data_publicacao"],
+         publicacao["data_validade"])
     )
     db.commit()
 
