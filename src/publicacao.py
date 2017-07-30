@@ -32,6 +32,8 @@ def obtem_publicacoes_desde():
         publicacoes = database.obtem_publicacoes_desde(inicio, categorias)
     elif guid_anunciante:
         publicacoes = database.obtem_publicacoes_por_anunciante(guid_anunciante)
+    else:
+        publicacoes = database.obtem_publicacoes()
     return Response(json.dumps(publicacoes), mimetype="application/json")
 
 @publicacoes.route('/<guid_publicacao>')

@@ -82,10 +82,10 @@ def anunciantes_por_categoria(id_categoria):
     cur.execute("SELECT * FROM anunciante WHERE id_categoria=?", (id_categoria,))
     return convert_to_dict_list(cur)
 
-def anunciante_por_id(idanunciante):
+def obtem_anunciante(guid_anunciante):
     db = get_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM anunciante WHERE _id=?", (idanunciante,))
+    cursor.execute("SELECT * FROM anunciante WHERE guid_anunciante=?", (guid_anunciante,))
     row = cursor.fetchone()
     return dict(row)
 
@@ -117,6 +117,12 @@ def salva_publicacao(publicacao):
     )
     db.commit()
 
+def obtem_publicacoes():
+    db = get_connection()
+    cursor = db.cursor()
+    cursor.execute(QUERY_PUBLICACOES + " ORDER BY data_publicacao DESC")
+    return convert_to_dict_list(cursor)
+
 def obtem_publicacoes_desde(data_inicio, ids_categorias):
     params = [data_inicio]
     params.extend(ids_categorias)
@@ -125,7 +131,8 @@ def obtem_publicacoes_desde(data_inicio, ids_categorias):
     cursor.execute(
         QUERY_PUBLICACOES + 
         "WHERE data_publicacao>=? "
-        "AND id_categoria IN ({0})".format(','.join('?'*len(ids_categorias))), params)
+        "AND id_categoria IN ({0})"
+        "ORDER BY data_publicacao DESC".format(','.join('?'*len(ids_categorias))), params)
     return convert_to_dict_list(cursor)
 
 def obtem_publicacoes_por_anunciante(guid_anunciante):
@@ -138,5 +145,8 @@ def obtem_publicacao(guid):
     db = get_connection()
     cursor = db.cursor()
     cursor.execute(QUERY_PUBLICACOES + "WHERE guid_publicacao=?", (guid,))
-    return dict(cursor.fetchone())
+    publicacao = dict(cursor.fetchone())
+    anunciante = obtem_anunciante(publicacao["guid_anunciante"])
+    publicacao["anunciante"] = anunciante
+    return publicacao
 
