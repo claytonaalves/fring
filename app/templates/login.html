@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/static/favicon.ico">
+    <title>Login</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/signin.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      {% block messages %}
+         {%if form.errors %}
+           <ul class="alert alert-danger">
+             {% for field, errors in form.errors.items() %}
+               <li>{{field}} {% for error in errors %}{{ error }}{% endfor %}</li>
+             {% endfor %}
+           </ul>
+         {% endif %}
+      {% endblock %}
+
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="alert alert-danger">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+      {% endwith %}
+
+      <div class="form-group">
+        <div class="text-center"><img src="/static/images/advertising-100x100.png" alt=""></div>
+        <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post" class="form-signin">
+
+          {{ form.csrf_token }}
+
+          <label for="username" class="sr-only">E-mail</label>
+          <input type="email" id="username" name="username" class="form-control" placeholder="E-mail" required autofocus>
+
+          <label for="password" class="sr-only">Senha</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
+
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+
+          <div class="text-center login-signup">
+              <a href="/cadastro">Cadastre-se</a>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </body>
+</html>

@@ -1,3 +1,5 @@
+import uuid
+
 from app import db
 
 class Publicacao(db.Model):
@@ -11,6 +13,9 @@ class Publicacao(db.Model):
     data_validade   = db.Column(db.DateTime, nullable=False)
     imagem          = db.Column(db.String(64))
     publicado       = db.Column(db.Boolean, unique=False, default=False)
+
+    def __init__(self):
+        self.guid_publicacao = str(uuid.uuid1())
 
     def __repr__(self):
         return '<Publicacao: %s>' % (self.titulo)                    

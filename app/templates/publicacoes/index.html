@@ -1,0 +1,28 @@
+{% extends 'contents.html' %}
+{% block contents %}
+<div class="content-body">
+  <table class="table table-hover">
+    <thead>
+      <th>Título</th>
+      <th>Publicado em</th>
+      <th>Valido até</th>
+      <th></th>
+    </thead>
+    <tbody>
+      {% for publicacao in publicacoes %}
+      <tr>
+        <td>{{publicacao.titulo}}</td>
+        <td>{{publicacao.data_publicacao|formata_data}}</td>
+        <td>{{publicacao.data_validade|formata_data}}</td>
+        <td>
+          <div class="text-right">
+            <a href="/publicacoes/edita/{{publicacao.guid_publicacao}}"><img src="/static/icons/pencil-2x.png" alt="Editar"></a>
+            <a href="/publicacoes/exclui/{{publicacao.guid_publicacao}}"><img src="/static/icons/trash-2x.png" alt="Editar"></a>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
