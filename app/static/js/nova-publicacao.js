@@ -12,8 +12,10 @@ function readImageURL(input) {
     }
 }
 
-$(document).ready(function () {
+$(function () {
     $("#imagem").click(function () {
         $("#file_upload").trigger("click");
     });
+
+    $("#data_validade").datepicker({dateFormat: "dd/mm/yy"});
 });
