@@ -24,3 +24,4 @@ CSRF_SESSION_KEY = "mysecretkey"
 # Secret key for signing cookies
 SECRET_KEY = "mysecretkey"
 
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')

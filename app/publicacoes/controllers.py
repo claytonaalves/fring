@@ -1,9 +1,12 @@
+import os
 import logging
 
 from flask import Blueprint, request, render_template, \
                   flash, g, session, redirect, url_for
+from flask import current_app
 
 from werkzeug import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
 from flask_simplelogin import login_required
 
 from app import db
@@ -41,6 +44,21 @@ def salva_publicacao(anunciante, form):
     form.populate_obj(publicacao)
     db.session.add(publicacao)
     db.session.commit()
+    salva_imagem()
+
+def salva_imagem():
+    print(request.files)
+    if 'imagem' not in request.files:
+        return
+    arquivo = request.files['imagem']
+    if arquivo.filename == '':
+        return 
+    if arquivo and allowed_file(arquivo.filename):
+        filename = secure_filename(arquivo.filename)
+        arquivo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+
+def allowed_file(filename):
+    return True
 
 @blueprint.app_template_filter()
 def formata_data(value):
