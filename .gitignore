@@ -4,3 +4,4 @@
 *.swo
 venv/*
 app/static/*
+node_modules

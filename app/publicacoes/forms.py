@@ -6,5 +6,5 @@ from wtforms.validators import Required, Email, EqualTo
 class PublicacaoForm(FlaskForm):
     titulo = TextField(u'Título')
     descricao = TextAreaField(u'Descrição')
-    data_validade = DateField()
+    data_validade = DateField(format='%d/%m/%Y')
 

@@ -16,8 +16,12 @@
         <td>{{publicacao.data_validade|formata_data}}</td>
         <td>
           <div class="text-right">
-            <a href="/publicacoes/edita/{{publicacao.guid_publicacao}}"><img src="/static/icons/pencil-2x.png" alt="Editar"></a>
-            <a href="/publicacoes/exclui/{{publicacao.guid_publicacao}}"><img src="/static/icons/trash-2x.png" alt="Editar"></a>
+            <a href="{{ url_for('.edita_publicacao', guid_publicacao=publicacao.guid_publicacao) }}">
+              <img src="/static/icons/pencil-2x.png" alt="Editar">
+            </a>
+            <a href="{{ url_for('.exclui_publicacao', guid_publicacao=publicacao.guid_publicacao) }}">
+              <img src="/static/icons/trash-2x.png" alt="Editar">
+            </a>
           </div>
         </td>
       </tr>

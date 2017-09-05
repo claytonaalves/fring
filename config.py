@@ -5,7 +5,8 @@ DEBUG = True
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
+#SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
+SQLALCHEMY_DATABASE_URI = 'mysql://fring:fring@127.0.0.1/fring'
 DATABASE_CONNECT_OPTIONS = {}
 
 # Application threads. A common general assumption is
@@ -24,4 +25,4 @@ CSRF_SESSION_KEY = "mysecretkey"
 # Secret key for signing cookies
 SECRET_KEY = "mysecretkey"
 
-UPLOAD_FOLDER = os.path.join(BASE_DIR, 'uploads')
+UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app/static/uploads')
