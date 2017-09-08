@@ -1,0 +1,7 @@
+*.swp
+*.pyc
+*.png
+*.db
+src/settings.py
+database/*
+images/*
