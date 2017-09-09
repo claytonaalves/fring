@@ -1,11 +1,17 @@
 #coding: utf8
-from flask import Flask
-from flask_admin import Admin
+import os
+import uuid
+
+from flask import Flask, Markup, url_for
+from flask_admin import Admin, form
 from flask_admin.contrib.sqla import ModelView
 from flask_babelex import Babel
+from werkzeug.utils import secure_filename
 from core.database import init_database
 
-app = Flask(__name__)
+images_base_path = os.path.join(os.getcwd(), 'images')
+
+app = Flask(__name__, static_folder=images_base_path)
 app.config.from_object('config')
 
 db = init_database(app)
@@ -17,6 +23,19 @@ from core.publicacoes.models import Publicacao
 
 admin = Admin(app, name=u"Manutenção")
 babel = Babel(app)
+
+def _imagename_uuid1_gen(obj, file_data):
+    _, ext = os.path.splitext(file_data.filename)
+    uid = uuid.uuid1()
+    return secure_filename('{}{}'.format(uid, ext))
+
+def _list_thumbnail(view, context, model, name):
+    if not model.imagem:
+        return ''
+
+    return Markup(
+        '<img src="/images/categorias/{imagem}" style="width: 150px;">'.format(imagem=model.imagem)
+    )
 
 class CidadeView(ModelView):
     column_exclude_list = ['categorias']
@@ -55,12 +74,27 @@ class CidadeView(ModelView):
 
 class CategoriaView(ModelView):
     column_exclude_list = ['anunciantes']
-    form_excluded_columns = ['anunciantes']
+    form_excluded_columns = ['anunciantes', 'imagem']
+    column_formatters = {
+        'imagem': _list_thumbnail
+    }
+    form_extra_fields = {
+        'filename': form.ImageUploadField(
+            'Imagem',
+            base_path=os.path.join(images_base_path, 'categorias'),
+            url_relative_path='images/',
+            namegen=_imagename_uuid1_gen,
+        )
+    }
+
+    def on_model_change(self, form, model, is_created=False):
+        super(CategoriaView, self).on_model_change(form, model, is_created)
+        model.imagem = form.filename.data.filename
 
 @babel.localeselector
 def get_locale():
     return 'pt_BR'
 
-admin.add_view(CidadeView(Cidade, db.session))
-admin.add_view(CategoriaView(Categoria, db.session))
+admin.add_view(CidadeView(Cidade, db.session, name="Cidades"))
+admin.add_view(CategoriaView(Categoria, db.session, name="Categorias"))
 
