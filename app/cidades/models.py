@@ -8,7 +8,7 @@ class Cidade(db.Model):
 
     categorias = db.relationship('Categoria', backref='cidade')
 
-    def __init__(self, nome, uf):
+    def __init__(self, nome=None, uf=None):
         self.nome = nome
         self.uf = uf
 

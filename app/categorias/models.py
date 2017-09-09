@@ -9,7 +9,7 @@ class Categoria(db.Model):
 
     anunciantes  = db.relationship('Anunciante', backref='categoria')
 
-    def __init__(self, descricao, cidade):
+    def __init__(self, descricao=None, cidade=None):
         self.descricao = descricao
         self.cidade = cidade
 
