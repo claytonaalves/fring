@@ -4,13 +4,16 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_simplelogin import SimpleLogin
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from flask_babelex import Babel
 
 app = Flask(__name__)
 
 app.config.from_object('config')
 
 db = SQLAlchemy(app)
+
 admin = Admin(app)
+babel = Babel(app)
 
 from app.auth import login_checker
 
@@ -26,6 +29,10 @@ def not_found(error):
 @app.route('/', methods=['GET'])
 def index():
     return redirect('/publicacoes')
+
+@babel.localeselector
+def get_locale():
+    return 'pt_BR'
 
 from app.teste.controllers import teste
 from app.publicacoes.controllers import blueprint as publicacoes
