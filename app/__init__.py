@@ -1,12 +1,12 @@
 #coding: utf8
 from flask import Flask, render_template, redirect
-from flask_sqlalchemy import SQLAlchemy
 from flask_simplelogin import SimpleLogin
+from core.database import init_database
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-db = SQLAlchemy(app)
+init_database(app)
 
 from app.auth import login_checker
 
@@ -28,13 +28,12 @@ from app.publicacoes.controllers import blueprint as publicacoes
 from app.auth.controllers import auth
 
 # remover depois
-from app.cidades.models import Cidade
-from app.categorias.models import Categoria
-from app.anunciantes.models import Anunciante
-from app.publicacoes.models import Publicacao
+from core.cidades.models import Cidade
+from core.categorias.models import Categoria
+from core.anunciantes.models import Anunciante
+from core.publicacoes.models import Publicacao
 
 app.register_blueprint(teste)
 app.register_blueprint(auth)
 app.register_blueprint(publicacoes)
 
-db.create_all()

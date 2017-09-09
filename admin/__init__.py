@@ -1,17 +1,22 @@
 #coding: utf8
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_babelex import Babel
+from core.database import init_database
 
 app = Flask(__name__)
 app.config.from_object('config')
 
-from app.cidades.models import Cidade
-from app.categorias.models import Categoria
-from app.anunciantes.models import Anunciante
-from app.publicacoes.models import Publicacao
+db = init_database(app)
+
+from core.cidades.models import Cidade
+from core.categorias.models import Categoria
+from core.anunciantes.models import Anunciante
+from core.publicacoes.models import Publicacao
+
+admin = Admin(app, name=u"Manutenção")
+babel = Babel(app)
 
 class CidadeView(ModelView):
     column_exclude_list = ['categorias']
@@ -52,16 +57,10 @@ class CategoriaView(ModelView):
     column_exclude_list = ['anunciantes']
     form_excluded_columns = ['anunciantes']
 
-db = SQLAlchemy(app)
-admin = Admin(app, name=u"Manutenção")
-babel = Babel(app)
-
 @babel.localeselector
 def get_locale():
     return 'pt_BR'
 
 admin.add_view(CidadeView(Cidade, db.session))
 admin.add_view(CategoriaView(Categoria, db.session))
-
-db.create_all()
 

@@ -10,9 +10,9 @@ from werkzeug import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 from flask_simplelogin import login_required
 
-from app import db
-from app.anunciantes.models import Anunciante
-from app.publicacoes.models import Publicacao
+from core.database import db
+from core.anunciantes.models import Anunciante
+from core.publicacoes.models import Publicacao
 from app.publicacoes.forms import PublicacaoForm
 
 blueprint = Blueprint('publicacoes', __name__, url_prefix='/publicacoes')

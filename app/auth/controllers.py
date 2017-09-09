@@ -1,8 +1,9 @@
 from flask import Blueprint, flash, redirect, render_template
-from app import db
+from core.database import db
 from app.auth.forms import CadastroForm
-from app.anunciantes.models import Anunciante
-from app.cidades.models import Cidade
+
+from core.anunciantes.models import Anunciante
+from core.cidades.models import Cidade
 
 auth = Blueprint('auth', __name__, url_prefix='/cadastro')
 

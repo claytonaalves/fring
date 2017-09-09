@@ -1,5 +1,5 @@
 from flask import session
-from app.anunciantes.models import Anunciante
+from core.anunciantes.models import Anunciante
 
 def login_checker(user):
     anunciante = Anunciante.query.filter_by(email=user.get('username')).first()

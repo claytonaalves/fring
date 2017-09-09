@@ -1,6 +1,6 @@
 import uuid
 
-from app import db
+from core.database import db
 
 class Publicacao(db.Model):
 
