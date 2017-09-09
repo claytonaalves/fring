@@ -13,5 +13,5 @@ class Cidade(db.Model):
         self.uf = uf
 
     def __repr__(self):
-        return '<Cidade: %s - %s>' % (self.nome, self.uf)
+        return '%s - %s' % (self.nome, self.uf)
 
