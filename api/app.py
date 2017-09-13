@@ -1,23 +1,32 @@
 #coding: utf8
-import database
+import os
 
-from flask import Flask, g
+from flask import Flask
 
-from cidade import cidades
-from categoria import categorias
-from anunciante import anunciantes
-from publicacao import publicacoes
+from core.database import db
+from core.cidades.models import Cidade
+from core.categorias.models import Categoria
+from core.anunciantes.models import Anunciante
+from core.publicacoes.models import Publicacao
 
-app = Flask(__name__, static_url_path='')
+from cidade import blueprint_cidades
+from categoria import categorias_blueprint
+#from anunciante import anunciantes
+#from publicacao import publicacoes
 
-database.register(app, g)
+def create_app(config):
+    images_base_path = os.path.join(os.getcwd(), 'images')
+    app = Flask(__name__, static_folder=images_base_path)
+    app.config.from_object(config)
+    register_extensions(app)
+    register_blueprints(app)
+    return app
 
-app.register_blueprint(cidades, url_prefix="/cidades")
-app.register_blueprint(categorias, url_prefix="/categorias")
-app.register_blueprint(anunciantes, url_prefix="/anunciantes")
-app.register_blueprint(publicacoes, url_prefix="/publicacoes")
+def register_extensions(app):
+    db.init_app(app)
 
-@app.route('/')
-def index():
-    return 'ok!'
-
+def register_blueprints(app):
+    app.register_blueprint(blueprint_cidades, url_prefix="/cidades")
+    app.register_blueprint(categorias_blueprint, url_prefix="/categorias")
+    #app.register_blueprint(anunciantes, url_prefix="/anunciantes")
+    #app.register_blueprint(publicacoes, url_prefix="/publicacoes")

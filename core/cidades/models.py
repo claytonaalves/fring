@@ -15,3 +15,15 @@ class Cidade(db.Model):
     def __repr__(self):
         return '%s - %s' % (self.nome, self.uf)
 
+def serializa(cidades):
+    result = []
+    for cidade in cidades:
+        cidade_dict = {
+            'id_cidade': cidade.id_cidade,
+            'nome': cidade.nome,
+            'uf': cidade.uf
+        }
+        result.append(cidade_dict)
+    return result
+
+

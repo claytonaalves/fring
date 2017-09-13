@@ -1,63 +1,15 @@
-#coding: utf8
-import sqlite3
-
+# coding: utf8
 from datetime import datetime
 
-DATABASE = 'database/database.db'
-
-context = None
-
-def register(app, g):
-    global context
-    context = g
-
-    @app.teardown_appcontext
-    def close_connection(exception):
-        db = getattr(g, '_database', None)
-        if db is not None:
-            db.close()
-
-def get_connection():
-    global context
-    db = getattr(context, '_database', None)
-    if db is None:
-        db = context._database = sqlite3.connect(DATABASE)
-    db.row_factory = sqlite3.Row
-    return db
+from core.cidades.models import Cidade
+from core.categorias.models import Categoria
+from core.anunciantes.models import Anunciante
+from core.publicacoes.models import Publicacao
 
 def convert_to_dict_list(cursor):
     r = [dict((cursor.description[i][0], value) \
                for i, value in enumerate(row)) for row in cursor.fetchall()]
     return r
-
-# ====================================================
-# ====================================================
-# Cidades
-# ====================================================
-# ====================================================
-
-def todas_cidades():
-    db = get_connection()
-    cur = db.cursor()
-    cur.execute("SELECT id_cidade, nome, uf FROM cidade")
-    return convert_to_dict_list(cur)
-
-# ====================================================
-# ====================================================
-# Categorias
-# ====================================================
-# ====================================================
-
-def categorias_por_cidade(id_cidade):
-    db = get_connection()
-    cur = db.cursor()
-    cur.execute(
-        "SELECT "
-        "   id_categoria, descricao, imagem, "
-        "   (SELECT COUNT(*) FROM anunciante WHERE id_categoria=a.id_categoria) AS qtde_anunciantes "
-        "FROM categoria a "
-        "WHERE id_cidade=?", (id_cidade,))
-    return convert_to_dict_list(cur)
 
 # ====================================================
 # ====================================================

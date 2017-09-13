@@ -16,3 +16,15 @@ class Categoria(db.Model):
     def __repr__(self):
         return '<Categoria: %s>' % (self.descricao)                    
 
+def serializa(categorias):
+    result = []
+    for categoria in categorias:
+        categoria_dict = {
+            'id_categoria': categoria.id_categoria,
+            'descricao': categoria.descricao,
+            'imagem': categoria.imagem,
+            'qtde_anunciantes': len(categoria.anunciantes),
+        }
+        result.append(categoria_dict)
+    return result
+

@@ -1,13 +1,11 @@
-import json
+from flask import Blueprint, Response, jsonify
 
-import database 
+from core.cidades.models import Cidade, serializa
 
-from flask import Blueprint, Response
+blueprint_cidades = Blueprint("cidades", __name__)
 
-cidades = Blueprint("cidades", __name__)
-
-@cidades.route('/')
+@blueprint_cidades.route('/')
 def cidades_index():
-    cidades = database.todas_cidades()
-    return Response(json.dumps(cidades), mimetype='application/json')
+    cidades = Cidade.query.all()
+    return jsonify(serializa(cidades))
 
