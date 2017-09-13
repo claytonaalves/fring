@@ -1,19 +1,24 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from app import db
+from app.cidades.models import Cidade
+from app.categorias.models import Categoria
+from app.anunciantes.models import Anunciante
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-db = SQLAlchemy(app)
+af = Cidade('Alta Floresta', 'MT')
 
+db.session.add(af)
+db.session.commit()
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True)
-    email = db.Column(db.String(120), unique=True)
+db.session.add(Categoria('Oficina', af))
+db.session.commit()
 
-    def __init__(self, username, email):
-        self.username = username
-        self.email = email
+db.session.add(Categoria('Escola', af))
+db.session.commit()
 
-    def __repr__(self):
-        return '<User %r>' % self.username
+#cat1 = Categoria.query.filter_by(id_categoria=1).first()
+#an1 = Anunciante('abcd1234', 'Fulano da Oficina', cat1)
+#an1.senha = '4321'
+#
+#db.session.add(an1)
+#db.session.commit()
+
+db.create_all()
