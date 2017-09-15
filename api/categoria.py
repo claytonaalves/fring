@@ -3,6 +3,7 @@ from core.categorias.models import Categoria, serializa
 
 categorias_blueprint = Blueprint("categorias", __name__)
 
+
 @categorias_blueprint.route('/')
 def categorias_index():
     id_cidade = request.args.get("id_cidade", "")

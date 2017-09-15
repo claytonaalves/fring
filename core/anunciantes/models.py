@@ -34,3 +34,20 @@ class Anunciante(db.Model):
     def __repr__(self):
         return '<Anunciante: %s>' % (self.nome_fantasia)                    
 
+    @property
+    def serialize(self):
+        return {
+                'guid_anunciante': self.guid_anunciante,
+                'id_cidade': self.id_cidade,
+                'id_categoria': self.id_categoria,
+                'razao_social': self.razao_social,
+                'nome_fantasia': self.nome_fantasia,
+                'telefone': self.telefone,
+                'celular': self.celular,
+                'logradouro': self.logradouro,
+                'numero': self.numero,
+                'bairro': self.bairro,
+                'data_cadastro': self.data_cadastro,
+                'email': self.email,
+                'senha': self.senha
+        }

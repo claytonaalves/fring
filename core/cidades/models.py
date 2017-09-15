@@ -1,5 +1,6 @@
 from core.database import db
 
+
 class Cidade(db.Model):
 
     id_cidade = db.Column(db.Integer, primary_key=True)
@@ -15,15 +16,14 @@ class Cidade(db.Model):
     def __repr__(self):
         return '%s - %s' % (self.nome, self.uf)
 
-def serializa(cidades):
-    result = []
-    for cidade in cidades:
-        cidade_dict = {
-            'id_cidade': cidade.id_cidade,
-            'nome': cidade.nome,
-            'uf': cidade.uf
+    @property
+    def serialize(self):
+        return {
+            'id_cidade': self.id_cidade,
+            'nome': self.nome,
+            'uf': self.uf
         }
-        result.append(cidade_dict)
-    return result
 
 
+def serializa(cidades):
+    return [cidade.serialize for cidade in cidades]

@@ -13,36 +13,6 @@ def convert_to_dict_list(cursor):
 
 # ====================================================
 # ====================================================
-# Anunciantes
-# ====================================================
-# ====================================================
-
-def salva_anunciante(anunciante):
-    db = get_connection()
-    cursor = db.cursor()
-    cursor.execute(
-        "INSERT INTO anunciante (guid_anunciante, nome_fantasia, logradouro, numero, bairro, telefone, celular, email, id_cidade, id_categoria) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-        (anunciante["guid_anunciante"], anunciante["nome_fantasia"], anunciante["endereco"], 
-         anunciante["numero"], anunciante["bairro"], anunciante["telefone"], anunciante["celular"], 
-         anunciante["email"], anunciante['id_cidade'], anunciante["id_categoria"]))
-    db.commit()
-
-def anunciantes_por_categoria(id_categoria):
-    db = get_connection()
-    cur = db.cursor()
-    cur.execute("SELECT * FROM anunciante WHERE id_categoria=?", (id_categoria,))
-    return convert_to_dict_list(cur)
-
-def obtem_anunciante(guid_anunciante):
-    db = get_connection()
-    cursor = db.cursor()
-    cursor.execute("SELECT * FROM anunciante WHERE guid_anunciante=?", (guid_anunciante,))
-    row = cursor.fetchone()
-    return dict(row)
-
-# ====================================================
-# ====================================================
 # Publicações
 # ====================================================
 # ====================================================

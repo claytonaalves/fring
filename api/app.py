@@ -4,15 +4,12 @@ import os
 from flask import Flask
 
 from core.database import db
-from core.cidades.models import Cidade
-from core.categorias.models import Categoria
-from core.anunciantes.models import Anunciante
-from core.publicacoes.models import Publicacao
 
-from cidade import blueprint_cidades
+from cidade import cidades_blueprint
 from categoria import categorias_blueprint
-#from anunciante import anunciantes
-#from publicacao import publicacoes
+from anunciante import anunciantes_blueprint
+from publicacao import publicacoes_blueprint
+
 
 def create_app(config):
     images_base_path = os.path.join(os.getcwd(), 'images')
@@ -22,11 +19,13 @@ def create_app(config):
     register_blueprints(app)
     return app
 
+
 def register_extensions(app):
     db.init_app(app)
 
+
 def register_blueprints(app):
-    app.register_blueprint(blueprint_cidades, url_prefix="/cidades")
+    app.register_blueprint(cidades_blueprint, url_prefix="/cidades")
     app.register_blueprint(categorias_blueprint, url_prefix="/categorias")
-    #app.register_blueprint(anunciantes, url_prefix="/anunciantes")
-    #app.register_blueprint(publicacoes, url_prefix="/publicacoes")
+    app.register_blueprint(anunciantes_blueprint, url_prefix="/anunciantes")
+    app.register_blueprint(publicacoes_blueprint, url_prefix="/publicacoes")

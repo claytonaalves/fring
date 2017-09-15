@@ -10,17 +10,23 @@ from werkzeug.utils import secure_filename
 PASTA_FOTOS_PUBLICACOES = "/home/clayton/working/fring-backend/fotos"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
-publicacoes = Blueprint("publicacoes", __name__)
+publicacoes_blueprint = Blueprint("publicacoes", __name__)
 
-@publicacoes.route('/', methods=['POST'])
+
+# publicacoes?desde=12345678
+@publicacoes_blueprint.route('/', methods=['GET', 'POST'])
+def index_publicacoes():
+    if request.method == 'GET':
+        return obtem_publicacoes_deste()
+    else:
+        return salva_publicacao()
+
 def salva_publicacao():
     publicacao = request.json
     database.salva_publicacao(publicacao)
     #firebase.publica_anuncio_test(anuncio)
     return Response(json.dumps(publicacao), mimetype='application/json')
 
-# publicacoes?desde=12345678
-@publicacoes.route('/', methods=["GET"])
 def obtem_publicacoes_desde():
     guid = request.args.get("guid", "") 
     inicio = request.args.get("desde", "")
@@ -36,12 +42,12 @@ def obtem_publicacoes_desde():
         publicacoes = database.obtem_publicacoes()
     return Response(json.dumps(publicacoes), mimetype="application/json")
 
-@publicacoes.route('/<guid_publicacao>')
+@publicacoes_blueprint.route('/<guid_publicacao>')
 def obtem_publicacao(guid_publicacao):
     publicacao = database.obtem_publicacao(guid_publicacao)
     return Response(json.dumps(publicacao), mimetype='application/json')
 
-@publicacoes.route('/fotos', methods=["GET", "POST"])
+@publicacoes_blueprint.route('/fotos', methods=["GET", "POST"])
 def foto_upload():
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -65,7 +71,7 @@ def foto_upload():
     </form>
     '''
 
-@publicacoes.route('/foto/<filename>')
+@publicacoes_blueprint.route('/foto/<filename>')
 def foto_publicacao(filename):
     return send_from_directory(PASTA_FOTOS_PUBLICACOES, filename)
 
