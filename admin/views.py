@@ -87,7 +87,11 @@ class CategoriaView(ModelView):
         model.imagem = form.filename.data.filename
 
 
+class AnuncianteView(ModelView):
+    pass
+
 def register_admin_views(admin):
     admin.add_view(CidadeView(Cidade, db.session, name="Cidades"))
     admin.add_view(CategoriaView(Categoria, db.session, name="Categorias"))
+    admin.add_view(AnuncianteView(Anunciante, db.session, name="Anunciantes"))
 
