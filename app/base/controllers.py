@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, redirect, url_for
 from jinja2 import TemplateNotFound
 
 base_blueprint = Blueprint('base', __name__)
@@ -15,4 +15,4 @@ def not_found(error):
 
 @base_blueprint.route('/', methods=['GET'])
 def index():
-    return redirect('/publicacoes')
+    return redirect(url_for('publicacoes.index_publicacoes'))
