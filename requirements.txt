@@ -7,3 +7,4 @@ flask-simplelogin==0.0.6
 Flask-Admin==1.5.0
 Flask-BabelEx==0.9.3
 requests==2.18.4
+Pillow==4.2.1
