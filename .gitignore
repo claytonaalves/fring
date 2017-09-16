@@ -5,3 +5,6 @@
 venv/*
 app/static/*
 node_modules
+api/settings.py
+images/*
+

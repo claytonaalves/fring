@@ -20,3 +20,17 @@ class Publicacao(db.Model):
     def __repr__(self):
         return '<Publicacao: %s>' % (self.titulo)                    
 
+    @property
+    def serialize(self):
+        return {
+            'guid_publicacao': self.guid_publicacao,
+            'guid_anunciante': self.guid_anunciante,
+            'id_categoria': self.id_categoria,
+            'titulo': self.titulo,
+            'descricao': self.descricao,
+            'data_publicacao': self.data_publicacao,
+            'data_validade': self.data_validade,
+            'imagem': self.imagem,
+            'publicado': self.publicado,
+        }
+

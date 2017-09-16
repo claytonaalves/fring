@@ -31,5 +31,8 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
+class ApiConfig(BaseConfig):
+    SERVER_NAME = "localhost:5000"
+
 class AdminConfig(BaseConfig):
-    PORT = 5001
+    SERVER_NAME = "localhost:5001"
