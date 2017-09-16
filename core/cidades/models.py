@@ -1,4 +1,5 @@
 from core.database import db
+from core.categorias.models import Categoria
 
 
 class Cidade(db.Model):
@@ -7,7 +8,7 @@ class Cidade(db.Model):
     nome = db.Column(db.String(64), nullable=False)
     uf = db.Column(db.String(2), nullable=False)
 
-    categorias = db.relationship('Categoria', backref='cidade')
+    categorias = db.relationship(Categoria, backref='cidade')
 
     def __init__(self, nome=None, uf=None):
         self.nome = nome

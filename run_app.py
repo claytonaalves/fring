@@ -1,2 +1,6 @@
-from app import app
-app.run(host="0.0.0.0", port=8080, debug=True)
+from app.app import create_app
+from config import BaseConfig
+app = create_app(BaseConfig)
+
+if __name__ == "__main__":
+    app.run()

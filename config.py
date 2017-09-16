@@ -1,12 +1,14 @@
 import os
 
+
 class BaseConfig:
     DEBUG = True
+    SERVER_NAME = "localhost:8080"
 
-    BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
+    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
     SQLALCHEMY_DATABASE_URI = 'mysql://fring:fring@127.0.0.1/fring'
     DATABASE_CONNECT_OPTIONS = {}
 
@@ -17,10 +19,10 @@ class BaseConfig:
     THREADS_PER_PAGE = 2
 
     # Enable protection agains *Cross-site Request Forgery (CSRF)*
-    CSRF_ENABLED     = True
+    CSRF_ENABLED = True
 
     # Use a secure, unique and absolutely secret key for
-    # signing the data. 
+    # signing the data.
     CSRF_SESSION_KEY = "mysecretkey"
 
     # Secret key for signing cookies
@@ -31,8 +33,10 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
+
 class ApiConfig(BaseConfig):
     SERVER_NAME = "localhost:5000"
+
 
 class AdminConfig(BaseConfig):
     SERVER_NAME = "localhost:5001"

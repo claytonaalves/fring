@@ -2,12 +2,11 @@ import os
 import logging
 import uuid
 
-from flask import Blueprint, request, render_template, \
-                  flash, g, session, redirect, url_for
+from flask import Blueprint, request, render_template, session, redirect
 from flask import current_app
 
-from werkzeug import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
+# from werkzeug import check_password_hash, generate_password_hash
+# from werkzeug.utils import secure_filename
 from flask_simplelogin import login_required
 
 from core.database import db
@@ -15,16 +14,23 @@ from core.anunciantes.models import Anunciante
 from core.publicacoes.models import Publicacao
 from app.publicacoes.forms import PublicacaoForm
 
-blueprint = Blueprint('publicacoes', __name__, url_prefix='/publicacoes')
+publicacoes_blueprint = Blueprint('publicacoes', __name__, url_prefix='/publicacoes')
 
-@blueprint.route('/', methods=['GET'])
+
+@publicacoes_blueprint.app_template_filter()
+def formata_data(value):
+    return value.strftime("%d/%m/%Y")
+
+
+@publicacoes_blueprint.route('/', methods=['GET'])
 @login_required
 def index_publicacoes():
     guid_anunciante = session.get('guid_anunciante')
     publicacoes = Publicacao.query.filter_by(guid_anunciante=guid_anunciante)
     return render_template("publicacoes/index.html", publicacoes=publicacoes)
 
-@blueprint.route('/nova', methods=['GET', 'POST'])
+
+@publicacoes_blueprint.route('/nova', methods=['GET', 'POST'])
 @login_required
 def nova_publicacao():
     guid_anunciante = session.get('guid_anunciante')
@@ -37,11 +43,12 @@ def nova_publicacao():
         print(form.errors)
     return render_template('publicacoes/nova.html', form=form, anunciante=anunciante)
 
-@blueprint.route('/exclui/<guid_publicacao>', methods=['GET', 'POST'])
+
+@publicacoes_blueprint.route('/exclui/<guid_publicacao>', methods=['GET', 'POST'])
 @login_required
 def exclui_publicacao(guid_publicacao):
     publicacao = Publicacao.query.filter_by(guid_publicacao=guid_publicacao).first()
-    if request.method=='GET':
+    if request.method == 'GET':
         form = PublicacaoForm(obj=publicacao)
         return render_template('publicacoes/exclui.html', publicacao=publicacao, form=form)
     else:
@@ -49,11 +56,12 @@ def exclui_publicacao(guid_publicacao):
         db.session.commit()
         return redirect('/')
 
-@blueprint.route('/edita/<guid_publicacao>', methods=['GET', 'POST'])
+
+@publicacoes_blueprint.route('/edita/<guid_publicacao>', methods=['GET', 'POST'])
 @login_required
 def edita_publicacao(guid_publicacao):
     publicacao = Publicacao.query.filter_by(guid_publicacao=guid_publicacao).first()
-    if request.method=='GET':
+    if request.method == 'GET':
         form = PublicacaoForm(obj=publicacao)
         return render_template('publicacoes/edita.html', publicacao=publicacao, form=form)
     else:
@@ -62,6 +70,7 @@ def edita_publicacao(guid_publicacao):
         db.session.add(publicacao)
         db.session.commit()
         return redirect('/')
+
 
 def salva_publicacao(anunciante, form):
     logging.info('Salvando publicacao')
@@ -73,6 +82,7 @@ def salva_publicacao(anunciante, form):
     form.populate_obj(publicacao)
     db.session.add(publicacao)
     db.session.commit()
+
 
 def salva_imagem():
     if 'imagem' not in request.files:
@@ -86,9 +96,6 @@ def salva_imagem():
         arquivo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
         return filename
 
+
 def allowed_file(filename):
     return True
-
-@blueprint.app_template_filter()
-def formata_data(value):
-    return value.strftime("%d/%m/%Y")

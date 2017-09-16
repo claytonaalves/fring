@@ -1,13 +1,14 @@
 from flask import Blueprint, flash, redirect, render_template
+
 from core.database import db
-from app.auth.forms import CadastroForm
-
 from core.anunciantes.models import Anunciante
-from core.cidades.models import Cidade
 
-auth = Blueprint('auth', __name__, url_prefix='/cadastro')
+from .forms import CadastroForm
 
-@auth.route('/', methods=['GET', 'POST'])
+auth_blueprint = Blueprint('auth', __name__, url_prefix='/cadastro')
+
+
+@auth_blueprint.route('/', methods=['GET', 'POST'])
 def index():
     form = CadastroForm()
     if form.validate_on_submit():
@@ -15,6 +16,7 @@ def index():
         flash('Cadastro efetuado!')
         return redirect('/')
     return render_template('auth/cadastro.html', form=form)
+
 
 def salva_cadastro_anunciante(form):
     anunciante = Anunciante()
@@ -31,4 +33,3 @@ def salva_cadastro_anunciante(form):
     anunciante.senha = form.senha.data
     db.session.add(anunciante)
     db.session.commit()
-

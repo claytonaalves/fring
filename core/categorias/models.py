@@ -27,4 +27,3 @@ def serializa(categorias):
         }
         result.append(categoria_dict)
     return result
-
