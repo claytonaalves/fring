@@ -88,7 +88,9 @@ class CategoriaView(ModelView):
 
 
 class AnuncianteView(ModelView):
-    pass
+
+    column_exclude_list = ['senha']
+
 
 def register_admin_views(admin):
     admin.add_view(CidadeView(Cidade, db.session, name="Cidades"))
