@@ -18,7 +18,7 @@ from core.publicacoes.models import Publicacao
 def _imagename_uuid1_gen(obj, file_data):
     _, ext = os.path.splitext(file_data.filename)
     uid = uuid.uuid1()
-    return secure_filename('{}{}'.format(uid, ext))
+    return secure_filename('{0}{1}'.format(uid, ext))
 
 
 def _list_thumbnail(view, context, model, name):
@@ -26,7 +26,7 @@ def _list_thumbnail(view, context, model, name):
         return ''
 
     return Markup(
-        '<img src="/images/categorias/{imagem}" style="width: 150px;">'.format(imagem=model.imagem)
+        '<img src="/images/categorias/{imagem}" style="max-width: 150px;">'.format(imagem=model.imagem)
     )
 
 
@@ -76,7 +76,7 @@ class CategoriaView(ModelView):
         'filename': form.ImageUploadField(
             'Imagem',
             # base_path=os.path.join(images_base_path, 'categorias'),
-            base_path='images/categorias',
+            base_path=os.path.join(os.path.dirname(__file__), '../images/categorias'),
             url_relative_path='images/',
             namegen=_imagename_uuid1_gen,
         )
@@ -89,7 +89,11 @@ class CategoriaView(ModelView):
 
 class AnuncianteView(ModelView):
 
-    column_exclude_list = ['senha']
+    can_create = False
+    can_edit = False
+    can_view_details = True
+    column_exclude_list = ['senha', 'logradouro', 'numero', 'bairro']
+    form_excluded_columns = ['senha']
 
 
 def register_admin_views(admin):
