@@ -25,7 +25,7 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(cidades_blueprint, url_prefix="/cidades")
-    app.register_blueprint(categorias_blueprint, url_prefix="/categorias")
-    app.register_blueprint(anunciantes_blueprint, url_prefix="/anunciantes")
-    app.register_blueprint(publicacoes_blueprint, url_prefix="/publicacoes")
+    app.register_blueprint(cidades_blueprint, url_prefix="/v1/cidades")
+    app.register_blueprint(categorias_blueprint, url_prefix="/v1/categorias")
+    app.register_blueprint(anunciantes_blueprint, url_prefix="/v1/anunciantes")
+    app.register_blueprint(publicacoes_blueprint, url_prefix="/v1/publicacoes")
