@@ -49,5 +49,4 @@ class Anunciante(db.Model):
                 'bairro': self.bairro,
                 'data_cadastro': self.data_cadastro,
                 'email': self.email,
-                'senha': self.senha
         }
