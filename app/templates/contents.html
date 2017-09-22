@@ -22,14 +22,14 @@
           </a>
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             <li class="nav-item active">
-              <a class="nav-link" href="/publicacoes">Minhas Publicações</a>
+              <a class="nav-link" href="{{ url_for('publicacoes.index_publicacoes') }}">Minhas Publicações</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/perfis">Perfis</a>
             </li>
           </ul>
-          <a href="/publicacoes/nova" class="btn btn-primary my-2 my-sm-0">Publicar</a>
-          <a href="/logout" class="btn btn-primary my-2 my-sm-0">Sair</a>
+          <a href="{{ url_for('publicacoes.nova_publicacao') }}" class="btn btn-primary my-2 my-sm-0">Publicar</a>
+          <a href="{{ url_for('simplelogin.logout') }}" class="btn btn-primary my-2 my-sm-0">Sair</a>
         </div>
       </nav>
 
