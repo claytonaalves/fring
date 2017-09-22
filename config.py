@@ -3,7 +3,6 @@ import os
 
 class BaseConfig:
     DEBUG = True
-    SERVER_NAME = "localhost:8080"
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -28,15 +27,19 @@ class BaseConfig:
     # Secret key for signing cookies
     SECRET_KEY = "mysecretkey"
 
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'app/static/uploads')
+    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'images/publicacoes')
 
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
 
+class AppConfig(BaseConfig):
+    APPLICATION_ROOT = '/app'
+
+
 class ApiConfig(BaseConfig):
-    SERVER_NAME = "localhost:5000"
+    APPLICATION_ROOT = '/api'
 
 
 class AdminConfig(BaseConfig):
-    SERVER_NAME = "localhost:5001"
+    APPLICATION_ROOT = '/admin'
