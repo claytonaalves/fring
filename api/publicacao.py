@@ -2,14 +2,13 @@
 import os
 import time
 
-# import firebase
-
 from flask import Blueprint, request, send_from_directory, redirect, url_for, jsonify, flash
 from werkzeug.utils import secure_filename
+from sqlalchemy import and_
 
+from core.firebase import publica_anuncio_firebase
 from core.database import db
 from core.publicacoes.models import Publicacao
-from sqlalchemy import and_
 
 PASTA_FOTOS_PUBLICACOES = "/home/clayton/working/fring-backend/fotos"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -78,7 +77,7 @@ def salva_publicacao():
     db.session.add(publicacao)
     db.session.commit()
     # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
-    # firebase.publica_anuncio_test(anuncio)
+    publica_anuncio_firebase(publicacao)
     return jsonify(publicacao.serialize)
 
 

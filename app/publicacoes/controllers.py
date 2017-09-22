@@ -9,6 +9,7 @@ from flask import current_app
 # from werkzeug.utils import secure_filename
 from flask_simplelogin import login_required
 
+from core.firebase import publica_anuncio_firebase
 from core.database import db
 from core.anunciantes.models import Anunciante
 from core.publicacoes.models import Publicacao
@@ -82,6 +83,7 @@ def salva_publicacao(anunciante, form):
     form.populate_obj(publicacao)
     db.session.add(publicacao)
     db.session.commit()
+    publica_anuncio_firebase(publicacao)
 
 
 def salva_imagem():

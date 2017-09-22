@@ -13,6 +13,7 @@ class Publicacao(db.Model):
     data_validade   = db.Column(db.DateTime, nullable=False)
     imagem          = db.Column(db.String(64))
     publicado       = db.Column(db.Boolean, unique=False, default=False)
+    anunciante      = db.relationship('Anunciante')
 
     def __init__(self):
         self.guid_publicacao = str(uuid.uuid1())
@@ -28,9 +29,19 @@ class Publicacao(db.Model):
             'id_categoria': self.id_categoria,
             'titulo': self.titulo,
             'descricao': self.descricao,
-            'data_publicacao': self.data_publicacao,
-            'data_validade': self.data_validade,
+            'data_publicacao': self.data_publicacao.strftime('%Y-%m-%d %H:%M:%S'),
+            'data_validade': self.data_validade.strftime('%Y-%m-%d %H:%M:%S'),
             'imagem': self.imagem,
             'publicado': self.publicado,
+            'anunciante': {
+                'razao_social': self.anunciante.razao_social,
+                'nome_fantasia': self.anunciante.nome_fantasia,
+                'logradouro': self.anunciante.logradouro,
+                'numero': self.anunciante.numero,
+                'telefone': self.anunciante.telefone,
+                'celular': self.anunciante.celular,
+                'email': self.anunciante.email,
+                'id_categoria': self.anunciante.id_categoria
+            }
         }
 
