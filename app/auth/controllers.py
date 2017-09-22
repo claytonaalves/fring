@@ -9,12 +9,12 @@ auth_blueprint = Blueprint('auth', __name__, url_prefix='/cadastro')
 
 
 @auth_blueprint.route('/', methods=['GET', 'POST'])
-def index():
+def auth_cadastro():
     form = CadastroForm()
     if form.validate_on_submit():
         salva_cadastro_anunciante(form)
         flash('Cadastro efetuado!')
-        return redirect('/')
+        return redirect('/app')
     return render_template('auth/cadastro.html', form=form)
 
 
@@ -22,7 +22,7 @@ def salva_cadastro_anunciante(form):
     anunciante = Anunciante()
     anunciante.nome_fantasia = form.nome_fantasia.data
     anunciante.razao_social = form.razao_social.data
-    anunciante.id_cidade = int(form.cidade.data)
+    anunciante.id_cidade = int(form.cidade.data.id_cidade)
     anunciante.id_categoria = int(form.categoria.data)
     anunciante.telefone = form.telefone.data
     anunciante.celular = form.celular.data

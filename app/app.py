@@ -22,12 +22,14 @@ def create_app(config):
 def register_extensions(app):
     db.init_app(app)
     login_manager = SimpleLogin(app, login_checker=login_checker)
-    login_manager.config['home_url'] = '/login/'
+    login_manager.config['login_url'] = '/app/login/'
+    login_manager.config['logout_url'] = '/app/logout/'
+    login_manager.config['home_url'] = '/app/'
     login_manager.messages['login_failure'] = u'Credenciais inválidas!'
     login_manager.messages['logout'] = u''
 
 
 def register_blueprints(app):
     app.register_blueprint(auth_blueprint)
-    app.register_blueprint(base_blueprint)
+    #app.register_blueprint(base_blueprint)
     app.register_blueprint(publicacoes_blueprint)

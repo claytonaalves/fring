@@ -2,7 +2,7 @@ import os
 import logging
 import uuid
 
-from flask import Blueprint, request, render_template, session, redirect
+from flask import Blueprint, request, render_template, session, redirect, url_for
 from flask import current_app
 
 # from werkzeug import check_password_hash, generate_password_hash
@@ -14,7 +14,7 @@ from core.anunciantes.models import Anunciante
 from core.publicacoes.models import Publicacao
 from app.publicacoes.forms import PublicacaoForm
 
-publicacoes_blueprint = Blueprint('publicacoes', __name__, url_prefix='/publicacoes')
+publicacoes_blueprint = Blueprint('publicacoes', __name__)
 
 
 @publicacoes_blueprint.app_template_filter()
@@ -38,7 +38,7 @@ def nova_publicacao():
     form = PublicacaoForm()
     if form.validate_on_submit():
         salva_publicacao(anunciante, form)
-        return redirect('/')
+        return redirect(url_for('publicacoes.index_publicacoes'))
     else:
         print(form.errors)
     return render_template('publicacoes/nova.html', form=form, anunciante=anunciante)
@@ -54,7 +54,7 @@ def exclui_publicacao(guid_publicacao):
     else:
         db.session.delete(publicacao)
         db.session.commit()
-        return redirect('/')
+        return redirect(url_for('publicacoes.index_publicacoes'))
 
 
 @publicacoes_blueprint.route('/edita/<guid_publicacao>', methods=['GET', 'POST'])
@@ -69,7 +69,7 @@ def edita_publicacao(guid_publicacao):
         form.populate_obj(publicacao)
         db.session.add(publicacao)
         db.session.commit()
-        return redirect('/')
+        return redirect(url_for('publicacoes.index_publicacoes'))
 
 
 def salva_publicacao(anunciante, form):
