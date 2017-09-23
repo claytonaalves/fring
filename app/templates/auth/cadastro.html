@@ -93,5 +93,41 @@
 
     <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
+
+<script charset="utf-8" type="text/javascript">
+
+$(function() {
+
+    var dropdown = {
+        cidade: $('#cidade'),
+        categoria: $('#categoria')
+    };
+
+    obtemCategorias();
+
+    function obtemCategorias() {
+        var send = {"id_cidade": dropdown.cidade.val()};
+        dropdown.categoria.attr('disabled', 'disabled');
+        dropdown.categoria.empty();
+        $.getJSON("/api/v1/categorias/", send, function(data) {
+            data.forEach(function(categoria) {
+                dropdown.categoria.append(
+                    $('<option>', {
+                        value: categoria.id_categoria,
+                        text: categoria.descricao
+                    })
+                );
+            });
+            dropdown.categoria.removeAttr('disabled');
+        });
+    }
+
+    dropdown.cidade.on('change', function() {
+        obtemCategorias();
+    });
+
+});
+
+</script>
 {% endblock %}
 
