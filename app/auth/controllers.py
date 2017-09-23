@@ -1,4 +1,4 @@
-from flask import Blueprint, flash, redirect, render_template
+from flask import Blueprint, flash, redirect, render_template, url_for
 
 from core.database import db
 from core.anunciantes.models import Anunciante
@@ -14,7 +14,7 @@ def auth_cadastro():
     if form.validate_on_submit():
         salva_cadastro_anunciante(form)
         flash('Cadastro efetuado!')
-        return redirect('/app')
+        return redirect(url_for('publicacoes.index_publicacoes'))
     return render_template('auth/cadastro.html', form=form)
 
 

@@ -37,7 +37,7 @@
 
       <div class="form-group">
         <div class="text-center"><img src="/static/images/advertising-100x100.png" alt=""></div>
-        <form action="{{ url_for('simplelogin.login', next=request.args.get('next', '/')) }}" method="post" class="form-signin">
+        <form action="{{ url_for('simplelogin.login', next=url_for('publicacoes.index_publicacoes')) }}" method="post" class="form-signin">
 
           {{ form.csrf_token }}
 
