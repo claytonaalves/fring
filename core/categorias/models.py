@@ -14,7 +14,7 @@ class Categoria(db.Model):
         self.cidade = cidade
 
     def __repr__(self):
-        return '<Categoria: %s>' % (self.descricao)                    
+        return '<Categoria {0}: {1}>'.format(self.id_categoria, self.descricao)                    
 
 def serializa(categorias):
     result = []
