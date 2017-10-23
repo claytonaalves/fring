@@ -9,8 +9,8 @@ anunciantes_blueprint = Blueprint("anunciantes", __name__)
 @anunciantes_blueprint.route('/', methods=['GET', 'POST'])
 def index_anunciantes():
     if request.method == 'POST':
-        salva_anunciante(request.json)
-        return jsonify('')
+        anunciante = salva_anunciante(request.json)
+        return jsonify(anunciante.serialize)
     id_categoria = int(request.args.get('id_categoria', '0'))
     if id_categoria == 0:
         anunciantes = Anunciante.query.all()
@@ -23,7 +23,7 @@ def salva_anunciante(json):
     anunciante = Anunciante()
     anunciante.guid_anunciante = json["guid_anunciante"]
     anunciante.nome_fantasia = json["nome_fantasia"]
-    anunciante.endereco = json["endereco"]
+    anunciante.logradouro = json["endereco"]
     anunciante.numero = json["numero"]
     anunciante.bairro = json["bairro"]
     anunciante.telefone = json["telefone"]
@@ -33,3 +33,4 @@ def salva_anunciante(json):
     anunciante.id_categoria = json["id_categoria"]
     db.session.add(anunciante)
     db.session.commit()
+    return anunciante
