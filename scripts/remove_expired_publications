@@ -1,0 +1,3 @@
+#!/bin/sh
+mysql -D fring -e "DELETE FROM publicacao WHERE data_validade<CURRENT_DATE"
+
