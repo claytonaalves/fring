@@ -17,9 +17,10 @@
   },
   "homepage": "https://github.com/claytonaalves/fring-webapp#readme",
   "dependencies": {
-    "bootstrap": "^4.0.0-alpha.6",
+    "bootstrap": "^4.0.0-beta",
     "jquery": "^3.2.1",
     "jquery-ui": "^1.12.1",
-    "jquery-ui-dist": "^1.12.1"
+    "jquery-ui-dist": "^1.12.1",
+    "tether": "^1.4.0"
   }
 }
