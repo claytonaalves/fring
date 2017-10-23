@@ -1,6 +1,7 @@
 # encoding: utf8
 import os
 import time
+from datetime import datetime
 
 from flask import Blueprint, request, send_from_directory, redirect, url_for, jsonify, flash
 from werkzeug.utils import secure_filename
@@ -10,7 +11,7 @@ from core.firebase import publica_anuncio_firebase
 from core.database import db
 from core.publicacoes.models import Publicacao
 
-PASTA_FOTOS_PUBLICACOES = "/home/clayton/working/fring-backend/fotos"
+PASTA_FOTOS_PUBLICACOES = "/var/www/fring-webapp/images/publicacoes"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 publicacoes_blueprint = Blueprint("publicacoes", __name__)
@@ -72,8 +73,8 @@ def salva_publicacao():
     publicacao.id_categoria = json['id_categoria']
     publicacao.titulo = json['titulo']
     publicacao.descricao = json['descricao']
-    publicacao.data_validade = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(float(json.get('data_validade', '0'))))
-    publicacao.imagem = json.get('imagem', '')
+    publicacao.data_validade = datetime.strptime(json.get('data_validade', '0'), '%Y-%m-%d %H:%M:%S')
+    publicacao.imagem = json.get('imagem', None)
     db.session.add(publicacao)
     db.session.commit()
     # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
