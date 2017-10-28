@@ -10,6 +10,7 @@ from sqlalchemy import and_
 from core.firebase import publica_anuncio_firebase
 from core.database import db
 from core.publicacoes.models import Publicacao
+from core.device.models import Device
 
 PASTA_FOTOS_PUBLICACOES = "/var/www/fring-webapp/images/publicacoes"
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -23,63 +24,15 @@ def obtem_publicacao(guid_publicacao):
     return jsonify(publicacao.serialize)
 
 
-# /publicacoes?desde=12345678
-# /publicacoes?desde=12345678&categorias=1,2,3
 @publicacoes_blueprint.route('/', methods=['GET', 'POST'])
 def index_publicacoes():
     if request.method == 'GET':
-        inicio = request.args.get("desde", "")
-        categorias = request.args.get("categorias", "").split(",")
-        guid_anunciante = request.args.get("guid_anunciante", "")
-        if inicio:
-            return obtem_publicacoes_desde(float(inicio), categorias)
-        elif guid_anunciante:
-            return obtem_publicacoes_por_anunciante(guid_anunciante)
-        elif categorias:
-            return obtem_publicacoes_por_categorias(categorias)
+        return get_publications_list(request)
     else:
-        return salva_publicacao()
-
-
-def obtem_publicacoes_desde(inicio_epoch, categorias):
-    """ Retorna a lista de publicações das categorias solicitadas
-        desde a última requisição.
-    """
-    inicio = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(inicio_epoch))
-    publicacoes = Publicacao.query.filter(
-        and_(
-            Publicacao.data_publicacao >= inicio,
-            Publicacao.id_categoria.in_(categorias)
-        )
-    ).order_by(Publicacao.data_publicacao.desc())
-    return jsonify([publicacao.serialize for publicacao in publicacoes])
-
-
-def obtem_publicacoes_por_anunciante(guid_anunciante):
-    publicacoes = Publicacao.query.filter_by(guid_anunciante=guid_anunciante)
-    return jsonify([publicacao.serialize for publicacao in publicacoes])
-
-
-def obtem_publicacoes_por_categorias(categorias):
-    publicacoes = Publicacao.query.filter(Publicacao.id_categoria.in_(categorias))
-    return jsonify([publicacao.serialize for publicacao in publicacoes])
-
-
-def salva_publicacao():
-    json = request.json
-    publicacao = Publicacao()
-    publicacao.guid_publicacao = json['guid_publicacao']
-    publicacao.guid_anunciante = json['guid_anunciante']
-    publicacao.id_categoria = json['id_categoria']
-    publicacao.titulo = json['titulo']
-    publicacao.descricao = json['descricao']
-    publicacao.data_validade = datetime.strptime(json.get('data_validade', '0'), '%Y-%m-%d %H:%M:%S')
-    publicacao.imagem = json.get('imagem', None)
-    db.session.add(publicacao)
-    db.session.commit()
-    # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
-    publica_anuncio_firebase(publicacao)
-    return jsonify(publicacao.serialize)
+        publicacao = salva_publicacao(request.json)
+        # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
+        #publica_anuncio_firebase(publicacao)
+        return publicacao
 
 
 @publicacoes_blueprint.route('/fotos', methods=["GET", "POST"])
@@ -110,6 +63,63 @@ def foto_upload():
 @publicacoes_blueprint.route('/foto/<filename>')
 def foto_publicacao(filename):
     return send_from_directory(PASTA_FOTOS_PUBLICACOES, filename)
+
+
+def get_publications_list(request):
+    """ Returns a list of publications based on request params
+    """
+    device_id = request.args.get("device_id", "")
+    categories = request.args.get("categorias", "").split(",")
+
+    device = Device.query.filter_by(device_id=device_id).first()
+    if not device:
+        device = Device(device_id)
+
+    publications = get_publications_since(device.last_query, categories)
+
+    device.last_query = datetime.now()
+    db.session.add(device)
+    db.session.commit()
+
+    return publications
+
+
+def get_publications_since(last_query, categories):
+    """ Returns a list of publications since last_query
+        filtering by categories
+    """
+    from_date = last_query.strftime('%Y-%m-%d %H:%M:%S')
+    publications = Publicacao.query.filter(
+        and_(
+            Publicacao.data_publicacao >= from_date,
+            Publicacao.id_categoria.in_(categories)
+        )
+    ).order_by(Publicacao.data_publicacao.desc())
+    return jsonify([publication.serialize for publication in publications])
+
+
+def obtem_publicacoes_por_anunciante(guid_anunciante):
+    publicacoes = Publicacao.query.filter_by(guid_anunciante=guid_anunciante)
+    return jsonify([publicacao.serialize for publicacao in publicacoes])
+
+
+def obtem_publicacoes_por_categorias(categorias):
+    publicacoes = Publicacao.query.filter(Publicacao.id_categoria.in_(categorias))
+    return jsonify([publicacao.serialize for publicacao in publicacoes])
+
+
+def salva_publicacao(json):
+    publicacao = Publicacao()
+    publicacao.guid_publicacao = json['guid_publicacao']
+    publicacao.guid_anunciante = json['guid_anunciante']
+    publicacao.id_categoria = json['id_categoria']
+    publicacao.titulo = json['titulo']
+    publicacao.descricao = json['descricao']
+    publicacao.data_validade = datetime.strptime(json.get('data_validade', '0'), '%Y-%m-%d %H:%M:%S')
+    publicacao.imagem = json.get('imagem', None)
+    db.session.add(publicacao)
+    db.session.commit()
+    return jsonify(publicacao.serialize)
 
 
 def allowed_file(filename):
