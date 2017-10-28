@@ -18,6 +18,7 @@ class Anunciante(db.Model):
     data_cadastro   = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     email           = db.Column(db.Text)
     senha           = db.Column(db.Text)
+    picture_file    = db.Column(db.Text)
 
     def __init__(self, guid_anunciante=None, nome_fantasia=None, categoria=None):
         self.guid_anunciante = guid_anunciante or self.cria_novo_uuid()
@@ -32,7 +33,7 @@ class Anunciante(db.Model):
         return str(uuid.uuid1())
 
     def __repr__(self):
-        return '<Anunciante: %s>' % (self.nome_fantasia)                    
+        return '<Advertiser: %s>' % (self.nome_fantasia)                    
 
     @property
     def serialize(self):
@@ -49,4 +50,5 @@ class Anunciante(db.Model):
                 'bairro': self.bairro,
                 'data_cadastro': self.data_cadastro,
                 'email': self.email,
+                'picture_file': self.picture_file
         }

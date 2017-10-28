@@ -3,17 +3,17 @@ import os
 import time
 from datetime import datetime
 
-from flask import Blueprint, request, send_from_directory, redirect, url_for, jsonify, flash
-from werkzeug.utils import secure_filename
+from flask import (
+    current_app, Blueprint, request, redirect, url_for, 
+    jsonify, flash, send_from_directory
+)
 from sqlalchemy import and_
 
 from core.firebase import publica_anuncio_firebase
 from core.database import db
+from core.image_upload import handle_image_upload
 from core.publicacoes.models import Publicacao
 from core.device.models import Device
-
-PASTA_FOTOS_PUBLICACOES = "/var/www/fring-webapp/images/publicacoes"
-ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 publicacoes_blueprint = Blueprint("publicacoes", __name__)
 
@@ -36,33 +36,15 @@ def index_publicacoes():
 
 
 @publicacoes_blueprint.route('/fotos', methods=["GET", "POST"])
-def foto_upload():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(PASTA_FOTOS_PUBLICACOES, filename))
-            return redirect(url_for('.foto_publicacao', filename=filename))
-    return '''
-    <!doctype html>
-    <title>Upload new File</title>
-    <h1>Upload new File</h1>
-    <form method=post enctype=multipart/form-data>
-    <p><input type=file name=file>
-     <input type=submit value=Upload>
-    </form>
-    '''
+def image_upload():
+    return handle_image_upload(request, 
+                               save_path=current_app.config['PUBLICATION_MEDIA_PATH'],
+                               success_path='.foto_publicacao')
 
 
 @publicacoes_blueprint.route('/foto/<filename>')
 def foto_publicacao(filename):
-    return send_from_directory(PASTA_FOTOS_PUBLICACOES, filename)
+    return send_from_directory(current_app.config['PUBLICATION_MEDIA_PATH'], filename)
 
 
 def get_publications_list(request):
@@ -120,8 +102,3 @@ def salva_publicacao(json):
     db.session.add(publicacao)
     db.session.commit()
     return jsonify(publicacao.serialize)
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS

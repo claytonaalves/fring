@@ -27,10 +27,12 @@ class BaseConfig:
     # Secret key for signing cookies
     SECRET_KEY = "mysecretkey"
 
-    UPLOAD_FOLDER = os.path.join(BASE_DIR, 'images/publicacoes')
-
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
+
+    ADVERTISER_MEDIA_PATH = os.path.join(BASE_DIR, "images/anunciantes")
+    PUBLICATION_MEDIA_PATH = os.path.join(BASE_DIR, "images/publicacoes")
+
 
 
 class AppConfig(BaseConfig):

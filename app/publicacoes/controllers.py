@@ -95,7 +95,7 @@ def salva_imagem():
     if arquivo and allowed_file(arquivo.filename):
         filename, extension = os.path.splitext(arquivo.filename)
         filename = str(uuid.uuid4()) + extension
-        arquivo.save(os.path.join(current_app.config['UPLOAD_FOLDER'], filename))
+        arquivo.save(os.path.join(current_app.config['PUBLICATION_MEDIA_PATH'], filename))
         return filename
 
 
