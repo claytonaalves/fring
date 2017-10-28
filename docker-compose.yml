@@ -3,12 +3,14 @@ services:
     web:
         build: .
         image: fring/apache
+        container_name: fring-web
         volumes:
             - .:/var/www/fring
         ports:
             - "80:80"
     mysql:
         image: mysql:latest
+        container_name: fring-mysql
         volumes:
             - /home/clayton/tmp/mysql-data:/var/lib/mysql
         environment:
