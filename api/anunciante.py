@@ -36,7 +36,7 @@ def save_advertiser_profile(json):
     advertiser = Anunciante()
     advertiser.guid_anunciante = json["guid_anunciante"]
     advertiser.nome_fantasia = json["nome_fantasia"]
-    advertiser.logradouro = json["endereco"]
+    advertiser.logradouro = json["logradouro"]
     advertiser.numero = json["numero"]
     advertiser.bairro = json["bairro"]
     advertiser.telefone = json["telefone"]
