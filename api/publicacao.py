@@ -58,6 +58,7 @@ def get_publications_list(request):
         device = Device(device_id)
 
     publications = get_publications_since(device.last_query, categories)
+    publications = jsonify([publication.serialize for publication in publications])
 
     device.last_query = datetime.now()
     db.session.add(device)
@@ -76,8 +77,8 @@ def get_publications_since(last_query, categories):
             Publicacao.data_publicacao >= from_date,
             Publicacao.id_categoria.in_(categories)
         )
-    ).order_by(Publicacao.data_publicacao.desc())
-    return jsonify([publication.serialize for publication in publications])
+    ).order_by(Publicacao.data_publicacao)
+    return publications
 
 
 def obtem_publicacoes_por_anunciante(guid_anunciante):
