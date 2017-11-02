@@ -1,5 +1,5 @@
 {
-  "name": "fring-webapp",
+  "name": "fring",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/claytonaalves/fring-webapp.git"
+    "url": "git+https://github.com/claytonaalves/fring.git"
   },
   "author": "Clayton A. Alves",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/claytonaalves/fring-webapp/issues"
+    "url": "https://github.com/claytonaalves/fring/issues"
   },
-  "homepage": "https://github.com/claytonaalves/fring-webapp#readme",
+  "homepage": "https://github.com/claytonaalves/fring#readme",
   "dependencies": {
     "bootstrap": "^4.0.0-beta",
     "jquery": "^3.2.1",
