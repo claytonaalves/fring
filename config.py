@@ -6,9 +6,18 @@ class BaseConfig:
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
+    DATABASE_HOST = os.environ['DATABASE_HOST']
+    DATABASE_NAME = os.environ['DATABASE_NAME']
+    DATABASE_USER = os.environ['DATABASE_USER']
+    DATABASE_PASS = os.environ['DATABASE_PASS']
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
-    SQLALCHEMY_DATABASE_URI = 'mysql://fring:fring@{0}/fring'.format(os.environ['DATABASE_HOST'])
+    SQLALCHEMY_DATABASE_URI = 'mysql://{0}:{1}@{2}/{3}'.format(
+        DATABASE_USER,
+        DATABASE_PASS,
+        DATABASE_HOST,
+        DATABASE_NAME
+    )
     DATABASE_CONNECT_OPTIONS = {}
 
     # Application threads. A common general assumption is
