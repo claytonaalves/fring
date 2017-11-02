@@ -8,7 +8,7 @@ class BaseConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     # SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'database.db')
-    SQLALCHEMY_DATABASE_URI = 'mysql://fring:fring@mysql/fring'
+    SQLALCHEMY_DATABASE_URI = 'mysql://fring:fring@{0}/fring'.format(os.environ['DATABASE_HOST'])
     DATABASE_CONNECT_OPTIONS = {}
 
     # Application threads. A common general assumption is
@@ -37,7 +37,6 @@ class BaseConfig:
 
 class AppConfig(BaseConfig):
     APPLICATION_ROOT = '/app'
-
 
 class ApiConfig(BaseConfig):
     APPLICATION_ROOT = '/api'
