@@ -26,18 +26,20 @@ RUN curl -O https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-x64.tar.xz \
     && rm -f node-v8.9.0-linux-x64.tar.xz
 
 # Application install
+RUN mkdir -p /srv/images/anunciantes /srv/images/publicacoes \
+    && chown apache:apache /srv/images
+
 COPY . /var/www/fring
+COPY httpd/wsgi.conf /etc/httpd/conf.d/
+
 WORKDIR /var/www/fring
 RUN npm install
-COPY httpd/wsgi.conf /etc/httpd/conf.d/
 
 ENV DATABASE_HOST=mysql \
     DATABASE_NAME=fring \
     DATABASE_USER=fring \
     DATABASE_PASS=fring \
     TZ=America/Cuiaba
-
-#RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 EXPOSE 8080
 

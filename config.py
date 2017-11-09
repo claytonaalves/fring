@@ -39,13 +39,14 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
-    ADVERTISER_MEDIA_PATH = os.path.join(BASE_DIR, "images/anunciantes")
-    PUBLICATION_MEDIA_PATH = os.path.join(BASE_DIR, "images/publicacoes")
+    ADVERTISER_MEDIA_PATH = "/srv/images/anunciantes"
+    PUBLICATION_MEDIA_PATH = "/srv/images/publicacoes"
 
 
 
 class AppConfig(BaseConfig):
     APPLICATION_ROOT = '/app'
+
 
 class ApiConfig(BaseConfig):
     APPLICATION_ROOT = '/api'
