@@ -6,11 +6,16 @@ services:
         container_name: fring-web
         ports:
             - "8080:8080"
+        volumes:
+            - /opt/fring:/var/www/fring
     mysql:
         image: mysql:latest
         container_name: fring-mysql
         volumes:
-            - /home/clayton/tmp/mysql-data:/var/lib/mysql
+            - /var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=1234 
+            - MYSQL_DATABASE=fring
+            - MYSQL_USER=fring
+            - MYSQL_PASSWORD=fring
             - TZ=America/Cuiaba
