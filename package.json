@@ -34,6 +34,14 @@
     {
       "from": "node_modules/bootstrap/dist",
       "to": "app/static"
+    },
+    {
+      "from": "node_modules/tether/dist/js",
+      "to": "app/static/js"
+    },
+    {
+      "from": "node_modules/popper.js/dist/umd",
+      "to": "app/static/js"
     }
   ]
 }
