@@ -27,13 +27,7 @@ RUN curl -O https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-x64.tar.xz \
 
 # Application install
 COPY httpd/wsgi.conf /etc/httpd/conf.d/
-COPY . /var/www/fring
-
-VOLUME /srv/images
-
-WORKDIR /var/www/fring
-RUN chmod 777 /var/www/fring/docker-entrypoint.sh \
-    && npm install
+COPY entrypoint.sh /usr/local/bin/
 
 ENV DATABASE_HOST=mysql \
     DATABASE_NAME=fring \
@@ -41,8 +35,12 @@ ENV DATABASE_HOST=mysql \
     DATABASE_PASS=fring \
     TZ=America/Cuiaba
 
+VOLUME /srv/images
+
 EXPOSE 8080
 
-ENTRYPOINT ["/var/www/fring/docker-entrypoint.sh"]
-CMD ["apachectl", "-D", "FOREGROUND"]
+WORKDIR /var/www/fring
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
+CMD [ "apachectl", "-D", "FOREGROUND" ]
 
