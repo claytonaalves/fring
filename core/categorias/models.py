@@ -9,9 +9,10 @@ class Categoria(db.Model):
 
     anunciantes  = db.relationship('Anunciante', backref='categoria')
 
-    def __init__(self, descricao=None, cidade=None):
+    def __init__(self, descricao=None, cidade=None, imagem=None):
         self.descricao = descricao
         self.cidade = cidade
+        self.imagem = imagem
 
     def __repr__(self):
         return '<Categoria {0}: {1}>'.format(self.id_categoria, self.descricao)                    
