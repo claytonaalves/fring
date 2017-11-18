@@ -4,8 +4,6 @@ services:
         build: .
         image: fring/apache
         container_name: fring-web
-        volumes:
-            - .:/var/www/fring
         ports:
             - "8080:8080"
     mysql:

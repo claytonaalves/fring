@@ -26,14 +26,14 @@ RUN curl -O https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-x64.tar.xz \
     && rm -f node-v8.9.0-linux-x64.tar.xz
 
 # Application install
-RUN mkdir -p /srv/images/anunciantes /srv/images/publicacoes \
-    && chown apache:apache /srv/images
-
-COPY . /var/www/fring
 COPY httpd/wsgi.conf /etc/httpd/conf.d/
+COPY . /var/www/fring
+
+VOLUME /srv/images
 
 WORKDIR /var/www/fring
-RUN npm install
+RUN chmod 777 /var/www/fring/docker-entrypoint.sh \
+    && npm install
 
 ENV DATABASE_HOST=mysql \
     DATABASE_NAME=fring \
@@ -43,4 +43,6 @@ ENV DATABASE_HOST=mysql \
 
 EXPOSE 8080
 
+ENTRYPOINT ["/var/www/fring/docker-entrypoint.sh"]
 CMD ["apachectl", "-D", "FOREGROUND"]
+
