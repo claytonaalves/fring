@@ -1,3 +1,4 @@
+# encoding: utf8
 from config import ApiConfig
 from core.database import db
 from core.device.models import Device
