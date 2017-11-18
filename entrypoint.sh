@@ -1,19 +1,19 @@
 #!/bin/bash
 
-if [ ! -f /var/www/fring/core/settings.py ]; then
+if [ ! -f /tmp/system_installed ]; then
     make decrypt_conf
     chmod 644 /var/www/fring/core/settings.py
-fi
 
-if [ ! -d /srv/images/anunciantes ]; then
     mkdir -p /srv/images/anunciantes 
     mkdir -p /srv/images/publicacoes
     chown -R apache:apache /srv/images
+
+    npm install
+    npm run postinstall
+
+    python fixtures.py
+
+    touch /tmp/system_installed
 fi
-
-npm install
-npm run postinstall
-
-echo "testando 12342"
 
 exec "$@"
