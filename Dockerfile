@@ -1,3 +1,13 @@
+# docker run -d --name fring -p 8080:8080 \
+# --volumes-from fring-data-store \
+# -v $(pwd):/var/www/fring \
+# -e FRING_PASSWORD=password \
+# -e DATABASE_HOST=10.1.1.100 \
+# -e DATABASE_NAME=fring \
+# -e DATABASE_USER=fring \
+# -e DATABASE_PASS=fring \
+# fring/apache
+
 FROM centos:6.9
 
 # Packages installation
@@ -26,7 +36,6 @@ RUN curl -O https://nodejs.org/dist/v8.9.0/node-v8.9.0-linux-x64.tar.xz \
     && rm -f node-v8.9.0-linux-x64.tar.xz
 
 # Application install
-COPY httpd/wsgi.conf /etc/httpd/conf.d/
 COPY entrypoint.sh /usr/local/bin/
 
 ENV DATABASE_HOST=mysql \
