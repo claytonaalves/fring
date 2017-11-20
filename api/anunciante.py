@@ -33,7 +33,11 @@ def get_advertiser_image(filename):
 
 
 def save_advertiser_profile(json):
-    advertiser = Anunciante()
+    new_advertiser = False
+    advertiser = Anunciante.query.filter_by(guid_anunciante=json["guid_anunciante"]).first()
+    if not advertiser:
+        advertiser = Anunciante()
+        new_advertiser = True
     advertiser.guid_anunciante = json["guid_anunciante"]
     advertiser.nome_fantasia = json["nome_fantasia"]
     advertiser.logradouro = json["logradouro"]
@@ -45,6 +49,7 @@ def save_advertiser_profile(json):
     advertiser.id_cidade = json['id_cidade']
     advertiser.id_categoria = json["id_categoria"]
     advertiser.picture_file = json.get("picture_file", None)
-    db.session.add(advertiser)
+    if new_advertiser:
+        db.session.add(advertiser)
     db.session.commit()
     return advertiser
