@@ -15,7 +15,11 @@ class Categoria(db.Model):
         self.imagem = imagem
 
     def __repr__(self):
-        return '<Categoria {0}: {1}>'.format(self.id_categoria, self.descricao)                    
+        return '<Categoria {0}: {1}>'.format(self.id_categoria, self.descricao.encode('utf8'))
+
+    def __unicode__(self):
+        return u'Categoria {0}: {1}'.format(self.id_categoria, self.descricao)
+
 
 def serializa(categorias):
     result = []
