@@ -12,11 +12,11 @@ FIREBASE_API_KEY = settings["firebase_api_key"]
 #    print(anuncio)
 
 
-def publica_anuncio_firebase(publicacao):
+def publica_anuncio_firebase(publicacao, topic="/topics/global"):
     message = {
-        "to": "/topics/global",
+        "to": topic,
         "data": {
-            "guid_anuncio": publicacao.guid_publicacao,
+            "guid_publicacao": publicacao.guid_publicacao,
             "titulo": publicacao.titulo,
             "descricao": publicacao.descricao,
         },

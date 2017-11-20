@@ -83,7 +83,7 @@ def salva_publicacao(anunciante, form):
     form.populate_obj(publicacao)
     db.session.add(publicacao)
     db.session.commit()
-    publica_anuncio_firebase(publicacao)
+    publica_anuncio_firebase(publicacao, "/topics/teste")
 
 
 def salva_imagem():

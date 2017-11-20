@@ -31,7 +31,7 @@ def index_publicacoes():
     else:
         publicacao = salva_publicacao(request.json)
         # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
-        #publica_anuncio_firebase(publicacao)
+        publica_anuncio_firebase(publicacao, "/topics/teste")
         return publicacao
 
 
