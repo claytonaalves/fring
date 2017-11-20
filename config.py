@@ -12,7 +12,7 @@ class BaseConfig:
     DATABASE_PASS = os.environ['DATABASE_PASS']
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = 'mysql://{0}:{1}@{2}/{3}'.format(
+    SQLALCHEMY_DATABASE_URI = 'mysql://{0}:{1}@{2}/{3}?charset=utf8'.format(
         DATABASE_USER,
         DATABASE_PASS,
         DATABASE_HOST,
@@ -41,7 +41,6 @@ class BaseConfig:
 
     ADVERTISER_MEDIA_PATH = "/srv/images/anunciantes"
     PUBLICATION_MEDIA_PATH = "/srv/images/publicacoes"
-
 
 
 class AppConfig(BaseConfig):
