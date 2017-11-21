@@ -15,6 +15,7 @@ if [ ! -f /tmp/system_installed ]; then
 
     mkdir -p /srv/images/anunciantes 
     mkdir -p /srv/images/publicacoes
+    mkdir -p /srv/images/categorias
     chown -R apache:apache /srv/images
 
     npm install
