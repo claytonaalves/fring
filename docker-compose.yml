@@ -10,13 +10,14 @@ services:
         volumes:
             - ./:/var/www/fring
             - ./httpd/wsgi.conf:/etc/httpd/conf.d/wsgi.conf
+            - images:/srv/images
         depends_on:
             - mysql
     mysql:
         image: mysql:latest
         container_name: fring-mysql
         volumes:
-            - mysql-data:/var/lib/mysql
+            - data:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=1234 
             - MYSQL_DATABASE=fring
@@ -25,4 +26,5 @@ services:
             - TZ=America/Cuiaba
 
 volumes:
-    mysql-data:
+    data:
+    images:
