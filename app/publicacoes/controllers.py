@@ -76,14 +76,14 @@ def edita_publicacao(guid_publicacao):
 def salva_publicacao(anunciante, form):
     logging.info('Salvando publicacao')
     nome_arquivo_imagem = salva_imagem()
-    publicacao = Publicacao()
-    publicacao.guid_anunciante = anunciante.guid_anunciante
-    publicacao.id_categoria = anunciante.id_categoria
-    publicacao.imagem = nome_arquivo_imagem
-    form.populate_obj(publicacao)
-    db.session.add(publicacao)
+    publication = Publicacao()
+    publication.guid_anunciante = anunciante.guid_anunciante
+    publication.id_categoria = anunciante.id_categoria
+    publication.add_image(nome_arquivo_imagem)
+    form.populate_obj(publication)
+    db.session.add(publication)
     db.session.commit()
-    publica_anuncio_firebase(publicacao, "/topics/teste")
+    publica_anuncio_firebase(publication, "/topics/global")
 
 
 def salva_imagem():

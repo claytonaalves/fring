@@ -9,6 +9,10 @@ function wait_mysql_startup {
     done
 }
 
+function migrate_database {
+    FLASK_APP=migrate.py flask db upgrade
+}
+
 if [ ! -f /tmp/system_installed ]; then
     make decrypt_conf
     chmod 644 /var/www/fring/core/settings.py

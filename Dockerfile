@@ -24,6 +24,7 @@ RUN (curl "https://bootstrap.pypa.io/get-pip.py" | python) \
     && pip install flask-simplelogin==0.0.6 \
     && pip install Flask-Admin==1.5.0 \
     && pip install Flask-BabelEx==0.9.3 \
+    && pip install Flask-Migrate==2.1.1 \
     && pip install requests==2.18.4 \
     && pip install Pillow==2.7.0
 

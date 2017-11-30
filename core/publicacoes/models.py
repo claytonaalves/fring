@@ -11,15 +11,25 @@ class Publicacao(db.Model):
     descricao       = db.Column(db.Text, nullable=False)
     data_publicacao = db.Column(db.DateTime, nullable=False, default=db.func.current_timestamp())
     data_validade   = db.Column(db.DateTime, nullable=False)
-    imagem          = db.Column(db.String(64))
     publicado       = db.Column(db.Boolean, unique=False, default=False)
     anunciante      = db.relationship('Anunciante')
+    imagens         = db.relationship('ImagemPublicacao')
+
+
+    def add_image(self, image_filename):
+        image = ImagemPublicacao()
+        image.guid_publicacao = self.guid_publicacao
+        image.caminho = image_filename
+        db.session.add(image)
+
 
     def __init__(self):
         self.guid_publicacao = str(uuid.uuid1())
 
+
     def __repr__(self):
         return '<Publicacao: %s>' % (self.titulo)                    
+
 
     @property
     def serialize(self):
@@ -31,7 +41,6 @@ class Publicacao(db.Model):
             'descricao': self.descricao,
             'data_publicacao': self.data_publicacao.strftime('%Y-%m-%d %H:%M:%S'),
             'data_validade': self.data_validade.strftime('%Y-%m-%d %H:%M:%S'),
-            'imagem': self.imagem,
             'publicado': self.publicado,
             'anunciante': {
                 'razao_social': self.anunciante.razao_social,
@@ -42,6 +51,24 @@ class Publicacao(db.Model):
                 'celular': self.anunciante.celular,
                 'email': self.anunciante.email,
                 'id_categoria': self.anunciante.id_categoria
-            }
+            },
+            'imagens': [imagem.caminho for imagem in self.imagens]
         }
+
+
+class ImagemPublicacao(db.Model):
+
+    __tablename__ = 'publicacao_imagem'
+
+    guid_imagem     = db.Column(db.String(36), primary_key=True)
+    guid_publicacao = db.Column(db.String(36), db.ForeignKey('publicacao.guid_publicacao'), nullable=False)
+    caminho         = db.Column(db.String(64))
+
+
+    def __init__(self):
+        self.guid_imagem = str(uuid.uuid1())
+
+
+    def __repr__(self):
+        return '<ImagemPublicacao: %s>' % (self.caminho)                    
 
