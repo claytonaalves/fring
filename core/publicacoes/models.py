@@ -43,6 +43,7 @@ class Publicacao(db.Model):
             'data_validade': self.data_validade.strftime('%Y-%m-%d %H:%M:%S'),
             'publicado': self.publicado,
             'anunciante': {
+                'guid_anunciante': self.guid_anunciante,
                 'razao_social': self.anunciante.razao_social,
                 'nome_fantasia': self.anunciante.nome_fantasia,
                 'logradouro': self.anunciante.logradouro,
