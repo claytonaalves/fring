@@ -16,12 +16,30 @@
         <div class="form-group">
           {{form.data_validade.label}} {{ form.data_validade(class="form-control") }}
         </div>
-        <input type="file" name="imagem" id="file_upload" onchange="readImageURL(this)">
+        <input type="file" name="imagem1" id="file_upload1" onchange="readImageURL(this)" style="display: none">
+        <input type="file" name="imagem2" id="file_upload2" onchange="readImageURL(this)" style="display: none">
+        <input type="file" name="imagem3" id="file_upload3" onchange="readImageURL(this)" style="display: none">
+        <input type="file" name="imagem4" id="file_upload4" onchange="readImageURL(this)" style="display: none">
       </div>
     </div>
 
     <div class="col-md-6">
-      <img id="imagem" src="/static/images/image_placeholder2.png" alt="Imagem">
+      <div class="row">
+        <div class="col-md-4 coluna-imagem">
+          <img id="imagem1" src="/static/images/placeholder.png" alt="Imagem">
+        </div>
+        <div class="col-md-4 coluna-imagem">
+          <img id="imagem2" src="/static/images/placeholder.png" alt="Imagem">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 coluna-imagem">
+          <img id="imagem3" src="/static/images/placeholder.png" alt="Imagem">
+        </div>
+        <div class="col-md-4 coluna-imagem">
+          <img id="imagem4" src="/static/images/placeholder.png" alt="Imagem">
+        </div>
+      </div>
     </div>
 
   </div>

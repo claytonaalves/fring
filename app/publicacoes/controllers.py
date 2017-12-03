@@ -75,28 +75,26 @@ def edita_publicacao(guid_publicacao):
 
 def salva_publicacao(anunciante, form):
     logging.info('Salvando publicacao')
-    nome_arquivo_imagem = salva_imagem()
     publication = Publicacao()
     publication.guid_anunciante = anunciante.guid_anunciante
     publication.id_categoria = anunciante.id_categoria
-    publication.add_image(nome_arquivo_imagem)
+    save_images(publication)
     form.populate_obj(publication)
     db.session.add(publication)
     db.session.commit()
     publica_anuncio_firebase(publication, "/topics/global")
 
 
-def salva_imagem():
-    if 'imagem' not in request.files:
-        return ''
-    arquivo = request.files['imagem']
-    if arquivo.filename == '':
-        return ''
-    if arquivo and allowed_file(arquivo.filename):
-        filename, extension = os.path.splitext(arquivo.filename)
-        filename = str(uuid.uuid4()) + extension
-        arquivo.save(os.path.join(current_app.config['PUBLICATION_MEDIA_PATH'], filename))
-        return filename
+def save_images(publication):
+    for nome_arquivo in request.files.keys():
+        arquivo = request.files[nome_arquivo]
+        if arquivo.filename == '':
+            continue
+        if arquivo and allowed_file(arquivo.filename):
+            filename, extension = os.path.splitext(arquivo.filename)
+            filename = str(uuid.uuid4()) + extension
+            arquivo.save(os.path.join(current_app.config['PUBLICATION_MEDIA_PATH'], filename))
+            publication.add_image(filename)
 
 
 def allowed_file(filename):

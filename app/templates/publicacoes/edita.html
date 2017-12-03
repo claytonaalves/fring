@@ -21,11 +21,13 @@
     </div>
 
     <div class="col-md-6">
-      {% if publicacao.imagem %}
-      <img id="imagem" src="/static/uploads/{{ publicacao.imagem }}" alt="Imagem">
-      {% else %}
-      <img id="imagem" src="/static/images/image_placeholder2.png" alt="Imagem">
-      {% endif %}
+      <div class="row">
+      {% for imagem in publicacao.imagens: %}
+        <div class="col-md-4 coluna-imagem">
+          <img id="imagem1" src="/images/publicacoes/{{ imagem.caminho  }}" alt="Imagem">
+        </div>
+      {% endfor %}
+      </div>
     </div>
 
   </div>
