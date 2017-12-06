@@ -1,7 +1,9 @@
+from sqlalchemy import or_
 from flask import Blueprint, request, jsonify, current_app, send_from_directory
 
 from core.database import db
 from core.anunciantes.models import Anunciante
+from core.categorias.models import Categoria
 from core.image_upload import handle_image_upload
 
 anunciantes_blueprint = Blueprint("anunciantes", __name__)
@@ -30,6 +32,15 @@ def image_upload():
 @anunciantes_blueprint.route('/foto/<filename>')
 def get_advertiser_image(filename):
     return send_from_directory(current_app.config['ADVERTISER_MEDIA_PATH'], filename)
+
+
+@anunciantes_blueprint.route('/search')
+def search_advertiser():
+    search_query = '%' + request.args.get('q') + '%'
+    q = db.session.query(Anunciante) \
+        .outerjoin(Categoria, Anunciante.id_categoria==Categoria.id_categoria) \
+        .filter(or_(Anunciante.nome_fantasia.like(search_query), Categoria.descricao.like(search_query))) 
+    return jsonify([anunciante.serialize for anunciante in q])
 
 
 def save_advertiser_profile(json):
