@@ -39,6 +39,7 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
+    CATEGORY_MEDIA_PATH = "/srv/images/categorias"
     ADVERTISER_MEDIA_PATH = "/srv/images/anunciantes"
     PUBLICATION_MEDIA_PATH = "/srv/images/publicacoes"
 

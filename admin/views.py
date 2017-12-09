@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 from flask_admin import form
 from flask_admin.contrib.sqla import ModelView
 
+from config import BaseConfig
 from core.database import db
 from core.cidades.models import Cidade
 from core.categorias.models import Categoria
@@ -75,8 +76,7 @@ class CategoriaView(ModelView):
     form_extra_fields = {
         'filename': form.ImageUploadField(
             'Imagem',
-            # base_path=os.path.join(images_base_path, 'categorias'),
-            base_path=os.path.join(os.path.dirname(__file__), '../images/categorias'),
+            base_path=BaseConfig.CATEGORY_MEDIA_PATH,
             url_relative_path='images/',
             namegen=_imagename_uuid1_gen,
         )
