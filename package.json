@@ -32,6 +32,14 @@
       "to": "app/static/js"
     },
     {
+      "from": "node_modules/jquery-ui-dist/jquery-ui.min.css",
+      "to": "app/static/css"
+    },
+    {
+      "from": "node_modules/jquery-ui-dist/jquery-ui.min.js",
+      "to": "app/static/js"
+    },
+    {
       "from": "node_modules/bootstrap/dist",
       "to": "app/static"
     },
