@@ -32,7 +32,9 @@ def _list_thumbnail(view, context, model, name):
 
 
 class CidadeView(ModelView):
+
     column_exclude_list = ['categorias']
+    column_filters = ['nome']
     form_excluded_columns = ['categorias']
     form_choices = {
         'uf': [
@@ -68,6 +70,8 @@ class CidadeView(ModelView):
 
 
 class CategoriaView(ModelView):
+
+    column_filters = ['descricao']
     column_exclude_list = ['anunciantes']
     form_excluded_columns = ['anunciantes', 'imagem']
     column_formatters = {
@@ -92,8 +96,9 @@ class AnuncianteView(ModelView):
     can_create = False
     can_edit = False
     can_view_details = True
-    column_exclude_list = ['senha', 'logradouro', 'numero', 'bairro']
     form_excluded_columns = ['senha']
+    column_filters = ['razao_social', 'nome_fantasia', 'telefone', 'email']
+    column_exclude_list = ['senha', 'logradouro', 'numero', 'bairro']
 
 
 def register_admin_views(admin):
