@@ -29,10 +29,10 @@ def index_publicacoes():
     if request.method == 'GET':
         return get_publications_list(request)
     else:
-        publicacao = salva_publicacao(request.json)
+        publicacao = save_publication(request.json)
         # Talvez ao invés de publicar diretamente no firebase fosse interessante iniciar uma task paralela
-        publica_anuncio_firebase(publicacao, "/topics/teste")
-        return publicacao
+        publica_anuncio_firebase(publicacao, "/topics/global")
+        return jsonify(publicacao.serialize)
 
 
 @publicacoes_blueprint.route('/fotos', methods=["GET", "POST"])
@@ -91,7 +91,7 @@ def obtem_publicacoes_por_categorias(categorias):
     return jsonify([publicacao.serialize for publicacao in publicacoes])
 
 
-def salva_publicacao(json):
+def save_publication(json):
     publicacao = Publicacao()
     publicacao.guid_publicacao = json['guid_publicacao']
     publicacao.guid_anunciante = json['guid_anunciante']
@@ -99,7 +99,8 @@ def salva_publicacao(json):
     publicacao.titulo = json['titulo']
     publicacao.descricao = json['descricao']
     publicacao.data_validade = datetime.strptime(json.get('data_validade', '0'), '%Y-%m-%d %H:%M:%S')
-    publicacao.imagem = json.get('imagem', None)
+    for filename in json.get('imagens', []):
+        publicacao.add_image(filename)
     db.session.add(publicacao)
     db.session.commit()
-    return jsonify(publicacao.serialize)
+    return publicacao
