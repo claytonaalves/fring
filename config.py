@@ -2,7 +2,7 @@ import os
 
 
 class BaseConfig:
-    DEBUG = True
+    DEBUG = False
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -39,9 +39,9 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
-    CATEGORY_MEDIA_PATH = "/home/clayton/tmp"
-    ADVERTISER_MEDIA_PATH = "/home/clayton/tmp"
-    PUBLICATION_MEDIA_PATH = "/home/clayton/tmp"
+    CATEGORY_MEDIA_PATH = "/srv/images/categorias" # "/home/clayton/tmp"
+    ADVERTISER_MEDIA_PATH = "/srv/images/anunciantes" # "/home/clayton/tmp"
+    PUBLICATION_MEDIA_PATH = "/srv/images/publicacoes" # "/home/clayton/tmp"
 
 
 class AppConfig(BaseConfig):
