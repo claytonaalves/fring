@@ -8,7 +8,7 @@ class Cidade(db.Model):
     nome = db.Column(db.String(64), nullable=False)
     uf = db.Column(db.String(2), nullable=False)
 
-    categorias = db.relationship(Categoria, backref='cidade')
+    categorias = db.relationship(Categoria, backref='cidade', cascade='delete')
 
     def __init__(self, nome=None, uf=None):
         self.nome = nome

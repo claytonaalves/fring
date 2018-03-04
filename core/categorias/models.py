@@ -3,7 +3,7 @@ from core.database import db
 class Categoria(db.Model):
 
     id_categoria = db.Column(db.Integer, primary_key=True)
-    id_cidade    = db.Column(db.Integer, db.ForeignKey('cidade.id_cidade'), nullable=False)
+    id_cidade    = db.Column(db.Integer, db.ForeignKey('cidade.id_cidade', ondelete='CASCADE'), nullable=False)
     descricao    = db.Column(db.Text, nullable=False)
     imagem       = db.Column(db.Text)
 
