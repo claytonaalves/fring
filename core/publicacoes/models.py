@@ -13,7 +13,7 @@ class Publicacao(db.Model):
     data_validade   = db.Column(db.DateTime, nullable=False)
     publicado       = db.Column(db.Boolean, unique=False, default=False)
     anunciante      = db.relationship('Anunciante')
-    imagens         = db.relationship('ImagemPublicacao')
+    imagens         = db.relationship('ImagemPublicacao', cascade='delete')
 
 
     def add_image(self, image_filename):
@@ -28,7 +28,7 @@ class Publicacao(db.Model):
 
 
     def __repr__(self):
-        return '<Publicacao: %s>' % (self.titulo)                    
+        return '<Publicacao: %s>' % (self.titulo)
 
 
     @property
@@ -62,7 +62,7 @@ class ImagemPublicacao(db.Model):
     __tablename__ = 'publicacao_imagem'
 
     guid_imagem     = db.Column(db.String(36), primary_key=True)
-    guid_publicacao = db.Column(db.String(36), db.ForeignKey('publicacao.guid_publicacao'), nullable=False)
+    guid_publicacao = db.Column(db.String(36), db.ForeignKey('publicacao.guid_publicacao', ondelete='CASCADE'), nullable=False)
     caminho         = db.Column(db.String(64))
 
 
@@ -71,5 +71,5 @@ class ImagemPublicacao(db.Model):
 
 
     def __repr__(self):
-        return '<ImagemPublicacao: %s>' % (self.caminho)                    
+        return '<ImagemPublicacao: %s>' % (self.caminho)
 
