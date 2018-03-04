@@ -6,10 +6,10 @@ class BaseConfig:
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-    DATABASE_HOST = os.environ['DATABASE_HOST']
-    DATABASE_NAME = os.environ['DATABASE_NAME']
-    DATABASE_USER = os.environ['DATABASE_USER']
-    DATABASE_PASS = os.environ['DATABASE_PASS']
+    DATABASE_HOST = os.environ.get('DATABASE_HOST', '127.0.0.1')
+    DATABASE_NAME = os.environ.get('DATABASE_NAME', 'fring')
+    DATABASE_USER = os.environ.get('DATABASE_USER', 'fring')
+    DATABASE_PASS = os.environ.get('DATABASE_PASS', 'fring')
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'mysql://{0}:{1}@{2}/{3}?charset=utf8'.format(
@@ -39,9 +39,9 @@ class BaseConfig:
     BABEL_DEFAULT_LOCALE = 'pt_BR'
     # BABEL_DEFAULT_TIMEZONE = ??
 
-    CATEGORY_MEDIA_PATH = "/srv/images/categorias"
-    ADVERTISER_MEDIA_PATH = "/srv/images/anunciantes"
-    PUBLICATION_MEDIA_PATH = "/srv/images/publicacoes"
+    CATEGORY_MEDIA_PATH = "/home/clayton/tmp"
+    ADVERTISER_MEDIA_PATH = "/home/clayton/tmp"
+    PUBLICATION_MEDIA_PATH = "/home/clayton/tmp"
 
 
 class AppConfig(BaseConfig):
