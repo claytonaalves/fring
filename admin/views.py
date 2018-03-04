@@ -88,7 +88,8 @@ class CategoriaView(ModelView):
 
     def on_model_change(self, form, model, is_created=False):
         super(CategoriaView, self).on_model_change(form, model, is_created)
-        model.imagem = form.filename.data.filename
+        if form.filename.data:
+            model.imagem = form.filename.data.filename
 
 
 class AnuncianteView(ModelView):
